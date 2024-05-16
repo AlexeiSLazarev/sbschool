@@ -36,10 +36,8 @@ class TestLinkedList(unittest.TestCase):
         ll.add_in_tail(Node(1))
         ll.add_in_tail(Node(2))
         ll.add_in_tail(Node(3))
-        ll.print_all_nodes()
-        print(" *********** ")
         ll.delete(2)
-        ll.print_all_nodes()
+        self.assertListEqual(ll.list_vals(), [1, 3])
         self.assertEqual(ll.len(), 2, "The length should be 2")
 
     '''
@@ -53,10 +51,8 @@ class TestLinkedList(unittest.TestCase):
         ll.add_in_tail(Node(2))
         ll.add_in_tail(Node(2))
         ll.add_in_tail(Node(3))
-        ll.print_all_nodes()
-        print(" *********** ")
         ll.delete(2,True)
-        ll.print_all_nodes()
+        self.assertListEqual(ll.list_vals(), [1, 3])
         self.assertEqual(ll.len(), 2, "The length should be 2")
 
     '''

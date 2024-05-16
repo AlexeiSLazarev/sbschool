@@ -57,16 +57,21 @@ class LinkedList:
             if n.value == val:
                 if not last_n:
                     self.head = n.next
-                    if not all: break
+                    if not all:
+                        break
                 else:
                     last_n.next = n.next
+                if n == self.tail:
+                    self.tail = last_n
             else:
                 last_n = n
             n = n.next
+        if self.head is None:
+            self.tail = None
 
     def clean(self):
-        if self.head: self.head = None
-        if self.tail: self.tail = None
+        self.head = None
+        self.tail = None
 
     def len(self):
         cnt = 0
@@ -77,15 +82,18 @@ class LinkedList:
         return cnt
 
     def insert(self, afterNode, newNode):
-        if newNode and not afterNode:
+        if not afterNode:
             newNode.next = self.head
             self.head = newNode
+            if not self.tail:
+                self.tail = newNode
         else:
             n = self.find(afterNode.value)
             if n:
-                n_next = n.next
+                newNode.next = n.next
                 n.next = newNode
-                newNode.next = n_next
+                if n == self.tail:
+                    self.tail = newNode
 
     def list_vals(self):
         rl = []
