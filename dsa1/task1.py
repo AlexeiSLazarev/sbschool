@@ -1,8 +1,18 @@
+def sum_linked_lists(ll1, ll2):
+    sum_list = []
+    l1 = ll1.list_vals()
+    l2 = ll2.list_vals()
+    if l1 and l2 and len(l1) == len(l2):
+        for a, b in zip(l1,l2):
+            sum_list.append(a + b)
+    return sum_list
+
 class Node:
 
     def __init__(self, v):
         self.value = v
         self.next = None
+
 
 class LinkedList:
 
@@ -32,16 +42,57 @@ class LinkedList:
         return None
 
     def find_all(self, val):
-        return [] # здесь будет ваш код
+        rl = []
+        n = self.head
+        while n:
+            if n.value and n.value == val:
+                rl.append(n)
+            n = n.next
+        return rl
 
     def delete(self, val, all=False):
-        pass # здесь будет ваш код
+        n = self.head
+        last_n = None
+        while n:
+            if n.value == val:
+                if not last_n:
+                    self.head = n.next
+                    if not all: break
+                else:
+                    last_n.next = n.next
+            else:
+                last_n = n
+            n = n.next
 
     def clean(self):
-        pass # здесь будет ваш код
+        if self.head: self.head = None
+        if self.tail: self.tail = None
 
     def len(self):
-        return 0 # здесь будет ваш код
+        cnt = 0
+        n = self.head
+        while n:
+            n = n.next
+            cnt += 1
+        return cnt
 
     def insert(self, afterNode, newNode):
-        pass # здесь будет ваш код
+        if newNode and not afterNode:
+            newNode.next = self.head
+            self.head = newNode
+        else:
+            n = self.find(afterNode.value)
+            if n:
+                n_next = n.next
+                n.next = newNode
+                newNode.next = n_next
+
+    def list_vals(self):
+        rl = []
+        n = self.head
+        while n:
+            rl.append(n.value)
+            n = n.next
+        return rl
+
+
