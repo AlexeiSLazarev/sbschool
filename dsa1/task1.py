@@ -61,7 +61,6 @@ class LinkedList:
     def get_ith_node(self, i):
         ith_node = self.head
         for i in range(i):
-            # print(last.val)
             ith_node = ith_node.next
         return ith_node
 
