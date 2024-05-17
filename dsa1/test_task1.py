@@ -32,6 +32,10 @@ class TestLinkedList(unittest.TestCase):
     '''
 
     def test_delete_node_once(self):
+        # Некорректное удаление одного элемента из пустого списка
+        ll = LinkedList()
+        ll.delete(0)
+        self.assertListEqual(ll.list_vals(), [], "One element ll.")
 
         # if only one element
         # if desired node is second

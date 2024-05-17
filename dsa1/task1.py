@@ -63,6 +63,8 @@ class LinkedList:
         return ith_node
 
     def delete_once(self, val):
+        if self.head is None:
+            return 0
         # proc head
         if self.head.value == val:
             self.head = self.head.next
