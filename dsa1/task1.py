@@ -3,6 +3,9 @@ def sum_linked_lists(ll1, ll2):
     The function takes two linked lists and if their lengths are equal,
     returns a new list where each element is the sum of corresponding elements from the input lists.
     """
+    if ll1.len() != ll2.len():
+        raise ValueError("Lengths of lists should be equal")
+
     sum_list = []
     l1 = ll1.list_vals()
     l2 = ll2.list_vals()
