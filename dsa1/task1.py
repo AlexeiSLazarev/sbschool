@@ -1,11 +1,16 @@
 def sum_linked_lists(ll1, ll2):
+    """
+    The function takes two linked lists and if their lengths are equal,
+    returns a new list where each element is the sum of corresponding elements from the input lists.
+    """
     sum_list = []
     l1 = ll1.list_vals()
     l2 = ll2.list_vals()
     if l1 and l2 and len(l1) == len(l2):
-        for a, b in zip(l1,l2):
+        for a, b in zip(l1, l2):
             sum_list.append(a + b)
     return sum_list
+
 
 class Node:
 
@@ -45,29 +50,55 @@ class LinkedList:
         rl = []
         n = self.head
         while n:
-            if n.value and n.value == val:
+            if n.value == val:
                 rl.append(n)
             n = n.next
         return rl
 
-    def delete(self, val, all=False):
-        n = self.head
-        last_n = None
+    def get_ith_node(self, i):
+        ith_node = self.head
+        for i in range(i):
+            # print(last.val)
+            ith_node = ith_node.next
+        return ith_node
+
+    def delete_once(self, val):
+        # proc head
+        if self.head.value == val:
+            self.head = self.head.next
+            if self.head is None:
+                self.tail = None
+            return 1
+        # proc tail
+        if self.tail.value == val:
+            if self.head == self.tail:
+                self.head = None
+                self.tail = None
+            else:
+                node = self.get_ith_node(self.len() - 2)
+                node.next = None
+                self.tail = node
+            return 1
+        # proc in between
+        last_ne = self.head  # last_ne - last not equal to val
+        n = self.head.next
         while n:
             if n.value == val:
-                if not last_n:
-                    self.head = n.next
-                    if not all:
-                        break
-                else:
-                    last_n.next = n.next
-                if n == self.tail:
-                    self.tail = last_n
+                last_ne.next = n.next
+                return 1
             else:
-                last_n = n
+                last_ne = n
             n = n.next
-        if self.head is None:
-            self.tail = None
+        return 0
+
+    def delete(self, val, all=False):
+        if all:
+            flag = 1
+            while flag:
+                flag = self.delete_once(val)
+        else:
+            self.delete_once(val)
+
 
     def clean(self):
         self.head = None
@@ -82,18 +113,19 @@ class LinkedList:
         return cnt
 
     def insert(self, afterNode, newNode):
-        if not afterNode:
+        if afterNode is None:
             newNode.next = self.head
             self.head = newNode
             if not self.tail:
                 self.tail = newNode
-        else:
-            n = self.find(afterNode.value)
-            if n:
-                newNode.next = n.next
-                n.next = newNode
-                if n == self.tail:
-                    self.tail = newNode
+            return
+
+        n = self.find(afterNode.value)
+        if n:
+            newNode.next = n.next
+            n.next = newNode
+            if n == self.tail:
+                self.tail = newNode
 
     def list_vals(self):
         rl = []
@@ -102,5 +134,3 @@ class LinkedList:
             rl.append(n.value)
             n = n.next
         return rl
-
-
