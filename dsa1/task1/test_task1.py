@@ -3,7 +3,7 @@
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
-from dsa1.task1 import *
+from dsa1.task1.task1 import *
 import unittest
 
 
@@ -200,8 +200,7 @@ class TestLinkedList(unittest.TestCase):
         ll2.add_in_tail(Node(2))
         ll2.add_in_tail(Node(1))
 
-        with self.assertRaises(ValueError):
-            sum_linked_lists(ll1, ll2)
+        self.assertListEqual(sum_linked_lists(ll1, ll2), [], "Should return []")
 
 
 if __name__ == '__main__':

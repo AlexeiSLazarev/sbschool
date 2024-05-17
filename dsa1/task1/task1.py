@@ -4,7 +4,7 @@ def sum_linked_lists(ll1, ll2):
     returns a new list where each element is the sum of corresponding elements from the input lists.
     """
     if ll1.len() != ll2.len():
-        raise ValueError("Lengths of lists should be equal")
+        return []
 
     sum_list = []
     l1 = ll1.list_vals()
