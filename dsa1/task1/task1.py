@@ -1,20 +1,3 @@
-def sum_linked_lists(ll1, ll2):
-    """
-    The function takes two linked lists and if their lengths are equal,
-    returns a new list where each element is the sum of corresponding elements from the input lists.
-    """
-    if ll1.len() != ll2.len():
-        return []
-
-    sum_list = []
-    l1 = ll1.list_vals()
-    l2 = ll2.list_vals()
-    if l1 and l2 and len(l1) == len(l2):
-        for a, b in zip(l1, l2):
-            sum_list.append(a + b)
-    return sum_list
-
-
 class Node:
 
     def __init__(self, v):
