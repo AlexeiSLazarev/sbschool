@@ -28,19 +28,31 @@ class LinkedList2d:
         return self.list_length
 
     def add_in_tail(self, item: Node):
-        if self.list_length == 0:
-            item.prev = self.head
-            item.next = self.tail
-            self.head.next = item
-            self.tail.prev = item
-        else:
-            # new to last
-            self.tail.prev.next = item
-            item.prev = self.tail.prev
-            # new to tail
-            item.next = self.tail
-            self.tail.prev = item
+        # new to last
+        self.tail.prev.next = item
+        item.prev = self.tail.prev
+        # new to tail
+        item.next = self.tail
+        self.tail.prev = item
         self.list_length += 1
+
+    def delete_one(self, val: int) -> int:
+        n: Optional[Node] = self.head.next
+        while not n.dummy:
+            if n.value == val:
+                n.prev.next = n.next
+                n.next.prev = n.prev
+                self.list_length -= 1
+                return 1
+            n = n.next
+        return 0
+
+    def delete(self, val: int, all: bool = False):
+        if self.len() == 0: return
+        if all:
+            while self.delete_one(val): pass
+        else:
+            self.delete_one(val)
 
     def list_vals(self) -> List[int]:
         rl: List[int] = []
@@ -59,6 +71,18 @@ class TestLinkedList2d(unittest.TestCase):
         self.assertEqual(ll.list_vals(), [1])
         ll.add_in_tail(Node(2))
         self.assertEqual(ll.list_vals(), [1, 2])
+
+    def test_delete(self):
+        ll = LinkedList2d()
+        ll.add_in_tail(Node(1))
+        ll.add_in_tail(Node(2))
+        ll.add_in_tail(Node(3))
+        ll.delete(1)
+        self.assertEqual(ll.list_vals(), [2, 3])
+        ll.add_in_tail(Node(1))
+        ll.add_in_tail(Node(1))
+        ll.delete(1, True)
+        self.assertEqual(ll.list_vals(), [2, 3])
 
 
 if __name__ == "__main__":
