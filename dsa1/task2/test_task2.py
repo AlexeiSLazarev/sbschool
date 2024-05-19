@@ -67,8 +67,6 @@ class TestLinkedList2(unittest.TestCase):
         ll.add_in_tail(n3)
 
         ll.delete(1)
-        lr = ll.list_vals()
-        llr = ll.find_all(1)
         self.assertEqual(ll.find_all(1), [n3])
         self.assertEqual(n2.prev, None)
         self.assertEqual(ll.head, n2)
@@ -99,6 +97,115 @@ class TestLinkedList2(unittest.TestCase):
         self.assertEqual(ll.find_all(1), [])
         self.assertEqual(ll.head, n2)
         self.assertEqual(ll.tail, n2)
+
+    def test_delete_empty_list(self):
+        ll = LinkedList2()
+        ll.delete(1)
+        self.assertEqual(ll.head, None)
+        self.assertEqual(ll.tail, None)
+
+    def test_delete_all_empty_list(self):
+        ll = LinkedList2()
+        ll.delete(1, all=True)
+        self.assertEqual(ll.head, None)
+        self.assertEqual(ll.tail, None)
+
+    def test_delete_head(self):
+        ll = LinkedList2()
+        n1 = Node(1)
+        n2 = Node(2)
+        ll.add_in_tail(n1)
+        ll.add_in_tail(n2)
+        ll.delete_head()
+
+        self.assertEqual(ll.head, n2)
+        self.assertEqual(ll.head.prev, None)
+        self.assertEqual(ll.len(), 1)
+
+    def test_delete_tail(self):
+        ll = LinkedList2()
+        n1 = Node(1)
+        n2 = Node(2)
+        ll.add_in_tail(n1)
+        ll.add_in_tail(n2)
+        ll.delete_tail()
+
+        self.assertEqual(ll.tail, n1)
+        self.assertEqual(ll.tail.next, None)
+        self.assertEqual(ll.len(), 1)
+
+    def test_delete_between(self):
+        ll = LinkedList2()
+        n1 = Node(1)
+        n2 = Node(2)
+        n3 = Node(3)
+        ll.add_in_tail(n1)
+        ll.add_in_tail(n2)
+        ll.add_in_tail(n3)
+        ll.delete_between(2)
+
+        self.assertEqual(n1.next, n3)
+        self.assertEqual(n3.prev, n1)
+        self.assertEqual(ll.len(), 2)
+
+    def test_delete_one_head(self):
+        ll = LinkedList2()
+        n1 = Node(1)
+        n2 = Node(2)
+        ll.add_in_tail(n1)
+        ll.add_in_tail(n2)
+        ll.delete_one(1)
+
+        self.assertEqual(ll.head, n2)
+        self.assertEqual(ll.head.prev, None)
+        self.assertEqual(ll.len(), 1)
+
+    def test_delete_one_tail(self):
+        ll = LinkedList2()
+        n1 = Node(1)
+        n2 = Node(2)
+        ll.add_in_tail(n1)
+        ll.add_in_tail(n2)
+        ll.delete_one(2)
+
+        self.assertEqual(ll.tail, n1)
+        self.assertEqual(ll.tail.next, None)
+        self.assertEqual(ll.len(), 1)
+
+    def test_delete_one_between(self):
+        ll = LinkedList2()
+        n1 = Node(1)
+        n2 = Node(2)
+        n3 = Node(3)
+        ll.add_in_tail(n1)
+        ll.add_in_tail(n2)
+        ll.add_in_tail(n3)
+        ll.delete_one(2)
+
+        self.assertEqual(n1.next, n3)
+        self.assertEqual(n3.prev, n1)
+        self.assertEqual(ll.len(), 2)
+
+    def test_delete_single_node(self):
+        ll = LinkedList2()
+        n1 = Node(1)
+        ll.add_in_tail(n1)
+        ll.delete(1)
+
+        self.assertEqual(ll.len(), 0)
+        self.assertEqual(ll.head, None)
+        self.assertEqual(ll.tail, None)
+
+    def test_delete_one_not_found(self):
+        ll = LinkedList2()
+        n1 = Node(1)
+        n2 = Node(2)
+        ll.add_in_tail(n1)
+        ll.add_in_tail(n2)
+        result = ll.delete_one(3)
+
+        self.assertEqual(result, 0)
+        self.assertEqual(ll.len(), 2)
 
     '''
     2.7. Добавьте в класс LinkedList2 метод очистки всего содержимого (создание пустого списка) -- clean()
@@ -145,6 +252,66 @@ class TestLinkedList2(unittest.TestCase):
         self.assertEqual(n2.next, n3)
         self.assertEqual(n2.prev, n1)
         self.assertEqual(n3.prev, n2)
+
+    def test_insert_after_last(self):
+        ll = LinkedList2()
+        n1 = Node(1)
+        n2 = Node(2)
+        ll.add_in_tail(n1)
+
+        ll.insert(None, n2)
+        self.assertEqual(ll.tail, n2)
+        self.assertEqual(ll.tail.prev, n1)
+
+    def test_insert_after_none_empty_list(self):
+        ll = LinkedList2()
+        n1 = Node(1)
+        n2 = Node(2)
+        ll.add_in_tail(n1)
+
+        ll.insert(None, n2)
+        self.assertEqual(ll.tail, n2)
+        self.assertEqual(ll.tail.prev, n1)
+
+    def test_insert_tail_not_empty(self):
+        ll = LinkedList2()
+        n1 = Node(1)
+        n2 = Node(2)
+        ll.add_in_tail(n1)
+        ll.insert_tail_not_empty(n2)
+
+        self.assertEqual(ll.tail, n2)
+        self.assertEqual(ll.tail.prev, n1)
+        self.assertEqual(ll.tail.next, None)
+        self.assertEqual(n1.next, n2)
+
+    def test_insert_after_tail(self):
+        ll = LinkedList2()
+        n1 = Node(1)
+        n2 = Node(2)
+        n3 = Node(3)
+        ll.add_in_tail(n1)
+        ll.add_in_tail(n2)
+        ll.insert_after(n2, n3)
+
+        self.assertEqual(ll.tail, n3)
+        self.assertEqual(n2.next, n3)
+        self.assertEqual(n3.prev, n2)
+        self.assertEqual(n3.next, None)
+
+    def test_insert_after_middle(self):
+        ll = LinkedList2()
+        n1 = Node(1)
+        n2 = Node(2)
+        n3 = Node(3)
+        ll.add_in_tail(n1)
+        ll.add_in_tail(n3)
+        ll.insert_after(n1, n2)
+
+        self.assertEqual(n1.next, n2)
+        self.assertEqual(n2.next, n3)
+        self.assertEqual(n3.prev, n2)
+        self.assertEqual(n2.prev, n1)
 
     '''
     2.6. Добавьте в класс LinkedList2 метод вставки узла самым первым элементом. add_in_head(newNode)

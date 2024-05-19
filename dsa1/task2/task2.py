@@ -1,5 +1,6 @@
 from typing import List, Optional
 
+
 class Node:
     def __init__(self, v: int):
         self.value: int = v
@@ -39,45 +40,46 @@ class LinkedList2:
             n = n.next
         return rl
 
-    def delete_once(self, val: int) -> int:
-        if self.head is None:
-            return 0
-        if self.head.value == val:
-            self.head = self.head.next
-            if self.head is None:
-                self.tail = None
-            else:
-                self.head.prev = None
-            return 1
-        if self.tail.value == val:
-            if self.head == self.tail:
-                self.head = None
-                self.tail = None
-            else:
-                node = self.get_ith_node(self.len() - 2)
-                node.next = None
-                self.tail = node
-            return 1
-        last_ne: Optional[Node] = self.head
+    def delete_head(self):
+        self.head.next.prev = None
+        self.head = self.head.next
+        return 1
+
+    def delete_tail(self):
+        self.tail.prev.next = None
+        self.tail = self.tail.prev
+        return 1
+
+    def delete_between(self, val):
         n: Optional[Node] = self.head.next
         while n:
             if n.value == val:
-                last_ne.next = n.next
-                if n.next is not None:
-                    n.next.prev = last_ne
+                n.next.prev = n.prev
+                n.prev.next = n.next
                 return 1
-            else:
-                last_ne = n
             n = n.next
         return 0
 
+    def delete_one(self, val: int) -> int:
+        if self.head is None:
+            return 0
+
+        if self.len() == 1 and self.head.value == val:
+            self.head = None
+            self.tail = None
+            return 0
+
+        if self.head.value == val: return self.delete_head()
+        if self.tail.value == val: return self.delete_tail()
+
+        return self.delete_between(val)
+
     def delete(self, val: int, all: bool = False):
+        if self.len() == 0: return
         if all:
-            flag: int = 1
-            while flag:
-                flag = self.delete_once(val)
+            while self.delete_one(val): pass
         else:
-            self.delete_once(val)
+            self.delete_one(val)
 
     def clean(self):
         self.head = None
@@ -97,6 +99,7 @@ class LinkedList2:
 
     def insert_tail_not_empty(self, newNode: Node):
         newNode.prev = self.tail
+        self.tail.next = newNode
         self.tail = newNode
 
     def insert_after(self, afterNode: Node, newNode: Node):
@@ -111,13 +114,14 @@ class LinkedList2:
                 self.tail = newNode
 
     def insert(self, afterNode: Optional[Node], newNode: Node):
-        list_len: int = self.len()
-        if list_len == 0 or afterNode is None:
-            if self.head is None:
-                self.insert_head_empty(newNode)
-            else:
-                self.insert_tail_not_empty(newNode)
+        if self.head is None:
+            self.insert_head_empty(newNode)
             return
+
+        if afterNode is None:
+            self.insert_tail_not_empty(newNode)
+            return
+
         self.insert_after(afterNode, newNode)
 
     def add_in_head(self, newNode: Node):
@@ -138,7 +142,11 @@ class LinkedList2:
         return rl
 
     def get_ith_node(self, i: int) -> Optional[Node]:
+        if i < 0:
+            return None
         ith_node: Optional[Node] = self.head
         for _ in range(i):
+            if ith_node is None:
+                return None
             ith_node = ith_node.next
         return ith_node
