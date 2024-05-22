@@ -10,6 +10,7 @@ class TestDynArrayDelete(unittest.TestCase):
             self.dyn_array.append(i)
         self.assertEqual(self.dyn_array.capacity, 16)
 
+    # it was the first bug
     def test_delete_only_one(self):
         da = DynArray()
         da.append(0)

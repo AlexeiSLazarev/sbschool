@@ -69,6 +69,7 @@ class DynArray:
         if i < 0 or i >= self.count:
             raise IndexError('Wrong index.')
 
+        # First error
         if self.count == 1:
             self.array[self.count - 1] = None
         else:
