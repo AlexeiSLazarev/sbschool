@@ -7,8 +7,6 @@ class DynArray:
     def __init__(self) -> None:
         self.count: int = 0
         self.capacity: int = 16
-        self.upsize_coef: int = 2
-        self.downsize_coef: float = 1.5
         self.array: Any = self.make_array(self.capacity)
 
     def reset(self) -> None:
@@ -59,7 +57,7 @@ class DynArray:
             raise IndexError('Wrong index.')
 
         if self.count >= self.capacity:
-            self.resize(self.capacity * self.upsize_coef)
+            self.resize(self.capacity * 2)
 
         self.shift_vals_from_i(i)
         self.array[i] = itm
@@ -81,8 +79,8 @@ class DynArray:
 
     def check_size(self):
         if self.capacity > 16 and self.count > 0:
-            if (self.capacity / self.count) > self.downsize_coef:
-                self.resize(max(16, int(self.capacity / self.downsize_coef)))
+            if (self.capacity / self.count) > 1.5:
+                self.resize(max(16, int(self.capacity / 1.5)))
 
     def list_vals(self) -> List[Any]:
         return [self.array[i] for i in range(self.count)]
