@@ -69,15 +69,15 @@ class DynArray:
         if i < 0 or i >= self.count:
             raise IndexError('Wrong index.')
 
+        # Shift values to the left
         self.shift_vals_to_i(i)
         self.array[self.count - 1] = None
         self.count -= 1
 
-        # Resize based on emptiness after deletion
+        # Resize if the array is less than `downsize_coef` full
         if self.capacity > 16 and self.count > 0:
-            emptiness = self.capacity / self.count
-            if emptiness > self.downsize_coef:
-                self.resize(int(self.capacity / self.downsize_coef))
+            if (self.capacity / self.count) > self.downsize_coef:
+                self.resize(max(16, int(self.capacity / self.downsize_coef)))
 
     def list_vals(self) -> List[Any]:
         return [self.array[i] for i in range(self.count)]
@@ -85,4 +85,5 @@ class DynArray:
     def print_vals(self) -> None:
         for i in range(self.count):
             print(self.array[i])
+
 
