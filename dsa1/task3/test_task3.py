@@ -84,24 +84,24 @@ class TestDynArray(unittest.TestCase):
             da.append(i)
 
         for i in range(num_el):
-            print(f"\n Count: {da.count}, capacity: {da.capacity}")
-            for x in range(da.count):
-                print(da[x], end=", ")
-            print("\n")
+            # print(f"\n Count: {da.count}, capacity: {da.capacity}")
+            # for x in range(da.count):
+            #     print(da[x], end=", ")
+            # print("\n")
             da.delete(0)
         self.assertListEqual(da.list_vals(), [])
 
         # Удаление элемента, когда размер буфера уменьшается.
-        # da = DynArray()
-        # for i in range(32):
-        #     da.append(i)
-        # self.assertEqual(da.capacity, 32)
-        #
-        # for i in range(32):
-        #     print(i, da.capacity)
-        #     da.delete(i)
-        # self.assertListEqual(da.list_vals(), [])
-        # # self.assertEqual(da.capacity, 16)
+        da = DynArray()
+        for i in range(32):
+            da.append(i)
+        self.assertEqual(da.capacity, 32)
+
+        for i in range(32):
+            da.delete(0)
+        self.assertListEqual(da.list_vals(), [])
+        self.assertEqual(da.capacity, 16)
+
 
 if __name__ == "__main__":
     unittest.main()
