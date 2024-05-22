@@ -64,23 +64,18 @@ class TestDynArrayDelete(unittest.TestCase):
         with self.assertRaises(IndexError):
             self.dyn_array.delete(-1)
 
-    def test_delete_series_with_resize(self):
-
-        # Удаление серии элементов
+    def test_delete_series_without_resize(self):
         da = DynArray()
-        num_el = 32
+        num_el = 16
         for i in range(num_el):
             da.append(i)
 
         for i in range(num_el):
-            # print(f"\n Count: {da.count}, capacity: {da.capacity}")
-            # for x in range(da.count):
-            #     print(da[x], end=", ")
-            # print("\n")
             da.delete(0)
         self.assertListEqual(da.list_vals(), [])
+        self.assertEqual(da.capacity, 16)
 
-        # Удаление элемента, когда размер буфера уменьшается.
+    def test_delete_series_with_resize(self):
         da = DynArray()
         for i in range(32):
             da.append(i)
