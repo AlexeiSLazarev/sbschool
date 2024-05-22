@@ -6,6 +6,8 @@ class DynArray:
     def __init__(self):
         self.count = 0
         self.capacity = 16
+        self.upsize_coef = 2
+        self.downsize_coef = 1.5
         self.array = self.make_array(self.capacity)
 
     def reset(self):
@@ -33,14 +35,6 @@ class DynArray:
         self.array = new_array
         self.capacity = new_capacity
 
-    # def resize(self, new_capacity):
-    #     if new_capacity < 16: new_capacity = 16
-    #     new_array = self.make_array(new_capacity)
-    #     for i in range(self.count):
-    #         new_array[i] = self.array[i]
-    #     self.array = new_array
-    #     self.capacity = new_capacity
-
     def append(self, itm):
         if self.count == self.capacity:
             self.resize(2 * self.capacity)
@@ -54,17 +48,16 @@ class DynArray:
             cur_index -= 1
 
     def shift_vals_to_i(self, i):
-        cur_index = self.count - 1
-        while cur_index > i:
-            self.array[cur_index-1] = self.array[cur_index]
-            cur_index -= 1
+        while i < self.count-1:
+            self.array[i] = self.array[i + 1]
+            i += 1
 
     def insert(self, i, itm):
         if i < 0 or i > self.count:
             raise IndexError('Wrond index.')
 
         if self.count >= self.capacity:
-            self.resize(self.capacity * 2)
+            self.resize(self.capacity * self.upsize_coef)
 
         if i == self.count:
             self.array[i] = itm
@@ -83,35 +76,21 @@ class DynArray:
     def delete(self, i):
         if i < 0 or i >= self.count:
             raise IndexError('Wrong index.')
-        if self.count == 1:
-            self.count = 0
-            self.array[0] = None
+
+        if i == self.count - 1:
+            self.array[i] = None
+            self.count -= 1
             return
 
         self.shift_vals_to_i(i)
+        self.array[self.count - 1] = None
         self.count -= 1
-        self.array[self.count] = None
 
         # Resize based on emptiness after deletion
-        emptiness = self.capacity / (self.count - 1)
-        if emptiness >= 1.5:
-            self.resize(int(self.capacity / 1.5))
-
-    # def delete(self, i):
-    #     if i < 0 or i >= self.count:
-    #         raise IndexError('Wrong index.')
-    #     if self.count == 1:
-    #         self.count = 0
-    #         self.array[0] = None
-    #         return
-    #
-    #     self.shift_vals_to_i(i)
-    #     self.count -= 1
-    #     self.array[self.count] = None
-    #
-    #     emptiness = self.capacity / self.count
-    #     if emptiness >= 1.5:
-    #         self.resize(int(self.capacity / 1.5))
+        if self.capacity > 16:
+            emptiness = self.capacity / self.count
+            if emptiness > self.downsize_coef:
+                self.resize(int(self.capacity / self.downsize_coef))
 
     def list_vals(self):
         res = []

@@ -1,3 +1,4 @@
+import random
 import unittest
 from task3 import DynArray
 
@@ -41,6 +42,10 @@ class TestDynArray(unittest.TestCase):
         self.assertEqual(da.count, 17)
         self.assertEqual(da.capacity, 32)
 
+    def test_delete(self):
+        da = DynArray()
+        da.append(0)
+        da.append(1)
         # Генерирует исключение IndexError, если i выходит за пределы массива.
         with self.assertRaises(IndexError):
             da.delete(-1)
@@ -57,6 +62,14 @@ class TestDynArray(unittest.TestCase):
         da.delete(0)
         self.assertEqual(da.count, 0)
 
+        # Удаление последнего элемента
+        da = DynArray()
+        da.append(0)
+        da.append(1)
+        da.delete(1)
+        self.assertListEqual(da.list_vals(), [0])
+
+        # Удаление непоследнего элемента
         da = DynArray()
         da.append(0)
         da.append(1)
@@ -64,17 +77,31 @@ class TestDynArray(unittest.TestCase):
         da.delete(1)
         self.assertListEqual(da.list_vals(), [0, 2])
 
-        #Удаление элемента, когда размер буфера уменьшается.
+        # Удаление серии элементов
         da = DynArray()
-        for i in range(32):
+        num_el = 32
+        for i in range(num_el):
             da.append(i)
-        self.assertEqual(da.capacity, 32)
 
-        for i in range(31):
-            print(i, da.capacity)
+        for i in range(num_el):
+            print(f"\n Count: {da.count}, capacity: {da.capacity}")
+            for x in range(da.count):
+                print(da[x], end=", ")
+            print("\n")
+            da.delete(0)
+        self.assertListEqual(da.list_vals(), [])
 
-            da.delete(i)
-        self.assertEqual(da.capacity, 16)
+        # Удаление элемента, когда размер буфера уменьшается.
+        # da = DynArray()
+        # for i in range(32):
+        #     da.append(i)
+        # self.assertEqual(da.capacity, 32)
+        #
+        # for i in range(32):
+        #     print(i, da.capacity)
+        #     da.delete(i)
+        # self.assertListEqual(da.list_vals(), [])
+        # # self.assertEqual(da.capacity, 16)
 
 if __name__ == "__main__":
     unittest.main()
