@@ -69,12 +69,16 @@ class DynArray:
         if i < 0 or i >= self.count:
             raise IndexError('Wrong index.')
 
-        # Shift values to the left
-        self.shift_vals_to_i(i)
-        self.array[self.count - 1] = None
+        if self.count == 1:
+            self.array[self.count - 1] = None
+        else:
+            self.shift_vals_to_i(i)
+            self.array[self.count - 1] = None
         self.count -= 1
 
-        # Resize if the array is less than `downsize_coef` full
+        self.check_size()
+
+    def check_size(self):
         if self.capacity > 16 and self.count > 0:
             if (self.capacity / self.count) > self.downsize_coef:
                 self.resize(max(16, int(self.capacity / self.downsize_coef)))

@@ -6,27 +6,34 @@ from task3 import DynArray
 class TestDynArrayDelete(unittest.TestCase):
     def setUp(self):
         self.dyn_array = DynArray()
-        for i in range(10):
+        for i in range(16):
             self.dyn_array.append(i)
-        self.initial_capacity = self.dyn_array.capacity
+        self.assertEqual(self.dyn_array.capacity, 16)
+
+    def test_delete_only_one(self):
+        da = DynArray()
+        da.append(0)
+        da.delete(0)
+        self.assertEqual(da.list_vals(), [])
+        self.assertEqual(da.capacity, 16)
 
     def test_delete_from_start(self):
         self.dyn_array.delete(0)
-        self.assertEqual(self.dyn_array.list_vals(), [1, 2, 3, 4, 5, 6, 7, 8, 9])
-        self.assertEqual(len(self.dyn_array), 9)
-        self.assertEqual(self.dyn_array.capacity, self.initial_capacity)
+        self.assertEqual(self.dyn_array.list_vals(), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15])
+        self.assertEqual(len(self.dyn_array), 15)
+        self.assertEqual(self.dyn_array.capacity, 16)
 
     def test_delete_from_middle(self):
         self.dyn_array.delete(4)
-        self.assertEqual(self.dyn_array.list_vals(), [0, 1, 2, 3, 5, 6, 7, 8, 9])
-        self.assertEqual(len(self.dyn_array), 9)
-        self.assertEqual(self.dyn_array.capacity, self.initial_capacity)
+        self.assertEqual(self.dyn_array.list_vals(), [0, 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15])
+        self.assertEqual(len(self.dyn_array), 15)
+        self.assertEqual(self.dyn_array.capacity, 16)
 
     def test_delete_from_end(self):
         self.dyn_array.delete(self.dyn_array.count - 1)
-        self.assertEqual(self.dyn_array.list_vals(), [0, 1, 2, 3, 4, 5, 6, 7, 8])
-        self.assertEqual(len(self.dyn_array), 9)
-        self.assertEqual(self.dyn_array.capacity, self.initial_capacity)
+        self.assertEqual(self.dyn_array.list_vals(), [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,])
+        self.assertEqual(len(self.dyn_array), 15)
+        self.assertEqual(self.dyn_array.capacity, 16)
 
     def test_delete_invalid_high_index(self):
         with self.assertRaises(IndexError):
