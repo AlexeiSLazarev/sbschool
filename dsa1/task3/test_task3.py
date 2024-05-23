@@ -67,13 +67,8 @@ class TestDeleteAndResize(unittest.TestCase):
         self.assertEqual(da.capacity, 32)
         self.assertEqual(da.count, 32)
 
-        print("\n")
         for i in range(len(da) - 1):
-            print(f"Step: {i}")
-            print(f"Before: i: {i}, capacity: {da.capacity}, size: {len(da)}, new capacity: {int(da.capacity / 1.5)}")
             da.delete(random.randint(0, len(da) - 1))
-            print(f"After: i: {i}, capacity: {da.capacity}, size: {len(da)}, new capacity: {int(da.capacity / 1.5)}")
-
             if i <= 10:
                 self.assertEqual(da.capacity, 32)
             if 10 < i <= 17:
