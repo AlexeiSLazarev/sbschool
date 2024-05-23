@@ -1,5 +1,89 @@
 import unittest
+import random
+
 from task3 import DynArray
+
+
+class TestDeleteAndResize(unittest.TestCase):
+    def test_delete_16(self):
+        da: DynArray = DynArray()
+        # check initial
+        self.assertEqual(da.capacity, 16)
+        self.assertEqual(da.count, 0)
+
+        # rise to 16. should be no change in capacity
+        for i in range(16):
+            da.append(i)
+        self.assertEqual(da.capacity, 16)
+        self.assertEqual(da.count, 16)
+        self.assertEqual(da[15], 15)
+
+        # delete first
+        da.delete(0)
+        self.assertEqual(da.list_vals(), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15])
+        self.assertEqual(len(da), 15)
+        self.assertEqual(da.capacity, 16)
+
+        # delete last
+        da.delete(14)
+        self.assertEqual(da.list_vals(), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,])
+        self.assertEqual(len(da), 14)
+        self.assertEqual(da.capacity, 16)
+
+        # randomly delete all other elements
+        for _ in range(len(da)):
+            da.delete(random.randint(0, len(da) - 1))
+        self.assertEqual(len(da), 0)
+        self.assertEqual(da.capacity, 16)
+
+    def test_delete_32(self):
+        da: DynArray = DynArray()
+        # check initial
+        self.assertEqual(da.capacity, 16)
+        self.assertEqual(da.count, 0)
+
+        # rise to 16. should be no change in capacity
+        for i in range(32):
+            da.append(i)
+        self.assertEqual(da.capacity, 32)
+        self.assertEqual(len(da), 32)
+        self.assertEqual(da[23], 23)
+
+        # delete first
+        da.delete(0)
+        self.assertEqual(da.list_vals(), list(range(1, 32)))
+        self.assertEqual(len(da), 31)
+        self.assertEqual(da.capacity, 32)
+
+        # delete last
+        da.delete(30)
+        self.assertEqual(da.list_vals(), list(range(1, 31)))
+        self.assertEqual(len(da), 30)
+        self.assertEqual(da.capacity, 32)
+
+        da: DynArray = DynArray()
+        for i in range(32):
+            da.append(i)
+        self.assertEqual(da.capacity, 32)
+        self.assertEqual(da.count, 32)
+
+        print("\n")
+        for i in range(len(da) - 1):
+            print(f"Step: {i}")
+            print(f"Before: i: {i}, capacity: {da.capacity}, size: {len(da)}, emptiness: {da.capacity / da.count}")
+            da.delete(random.randint(0, len(da) - 1))
+            print(f"After: i: {i}, capacity: {da.capacity}, size: {len(da)}, emptiness: {da.capacity / da.count}")
+
+            if i < 10:
+                self.assertEqual(da.capacity, 32)
+            # After: i = 10, size become 21 elements, emptiness > 1.5 -> resize to self.capacity / 1.5.
+            # New size is 21 elements
+            if 10 <= i < 18:
+                self.assertEqual(da.capacity, 21)
+            # After: i = 18, size become 14 elements, emptiness = 1.5 -> resize to self.capacity / 1.5.
+            # New size is 16 elements
+            if i >= 24:
+                self.assertEqual(da.capacity, 16)
 
 
 class TestDynArrayDelete(unittest.TestCase):
@@ -164,4 +248,3 @@ class TestDynArray(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

@@ -89,4 +89,3 @@ class DynArray:
         for i in range(self.count):
             print(self.array[i])
 
-
