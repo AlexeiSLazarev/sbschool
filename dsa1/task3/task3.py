@@ -80,7 +80,7 @@ class DynArray:
     def check_size(self):
         if self.capacity > 16 and self.count > 0:
             new_capacity: int = int(self.capacity / 1.5)
-            if new_capacity > self.count:
+            if new_capacity >= self.count:
                 self.resize(max(16, new_capacity))
 
     def list_vals(self) -> List[Any]:

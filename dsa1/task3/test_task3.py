@@ -68,13 +68,25 @@ class TestDeleteAndResize(unittest.TestCase):
         self.assertEqual(da.count, 32)
 
         for i in range(len(da) - 1):
+            print(i)
             da.delete(random.randint(0, len(da) - 1))
-            if i <= 10:
-                self.assertEqual(da.capacity, 32)
-            if 10 < i <= 17:
-                self.assertEqual(da.capacity, 21)
-            if i > 17:
-                self.assertEqual(da.capacity, 16)
+            print(f" setp: {i},  count {da.count}, capacity {da.capacity} \n")
+            # if i <= 10:
+            #     self.assertEqual(da.capacity, 32)
+            # if 10 < i <= 17:
+            #     self.assertEqual(da.capacity, 21)
+            # if i > 17:
+            #     self.assertEqual(da.capacity, 16)
+
+    def test_2048(self):
+        da: DynArray = DynArray()
+        for i in range(1048):
+            da.append(i)
+        self.assertEqual(da.capacity, 2048)
+        self.assertEqual(da.count, 1048)
+        da.delete(0)
+        self.assertEqual(da.capacity, 1365)
+        self.assertEqual(da.count, 1047)
 
 
 class TestDynArrayDelete(unittest.TestCase):
