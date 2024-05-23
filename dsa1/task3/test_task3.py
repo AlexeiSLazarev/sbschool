@@ -70,19 +70,15 @@ class TestDeleteAndResize(unittest.TestCase):
         print("\n")
         for i in range(len(da) - 1):
             print(f"Step: {i}")
-            print(f"Before: i: {i}, capacity: {da.capacity}, size: {len(da)}, emptiness: {da.capacity / da.count}")
+            print(f"Before: i: {i}, capacity: {da.capacity}, size: {len(da)}, new capacity: {int(da.capacity / 1.5)}")
             da.delete(random.randint(0, len(da) - 1))
-            print(f"After: i: {i}, capacity: {da.capacity}, size: {len(da)}, emptiness: {da.capacity / da.count}")
+            print(f"After: i: {i}, capacity: {da.capacity}, size: {len(da)}, new capacity: {int(da.capacity / 1.5)}")
 
-            if i < 10:
+            if i <= 10:
                 self.assertEqual(da.capacity, 32)
-            # After: i = 10, size become 21 elements, emptiness > 1.5 -> resize to self.capacity / 1.5.
-            # New size is 21 elements
-            if 10 <= i < 18:
+            if 10 < i <= 17:
                 self.assertEqual(da.capacity, 21)
-            # After: i = 18, size become 14 elements, emptiness = 1.5 -> resize to self.capacity / 1.5.
-            # New size is 16 elements
-            if i >= 24:
+            if i > 17:
                 self.assertEqual(da.capacity, 16)
 
 
