@@ -85,7 +85,7 @@ class TestDeleteAndResize(unittest.TestCase):
         self.assertEqual(da.capacity, 2048)
         self.assertEqual(da.count, 1048)
         da.delete(0)
-        self.assertEqual(da.capacity, 1365)
+        self.assertEqual(da.capacity, 2048)
         self.assertEqual(da.count, 1047)
 
 
