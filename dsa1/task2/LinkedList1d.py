@@ -3,63 +3,53 @@ import unittest
 
 
 class Node:
-    def __init__(self, v: int):
-        self.value: int = v
+    def __init__(self, value: int = 0):
+        self.value: int = value
         self.prev: Node = None
         self.next: Node = None
 
-# the dummy flag is not needed!
-# class Node(BaseNode):
-#     def __init__(self, v: int, dummy_flag: bool = False):
-#         super().__init__(v)
-#         self.dummy: bool = dummy_flag
-
 
 class LinkedList1d:
-
     def __init__(self):
-        self.origin: Optional[Node] = Node(0)
-        self.origin.prev = self.origin
-        self.origin.next = self.origin
+        self.start_node: Node = Node()
+        self.start_node.prev = self.start_node
+        self.start_node.next = self.start_node
         self.list_length: int = 0
 
     def len(self) -> int:
         return self.list_length
 
-    def add_in_tail(self, item: Node):
-        # new to last
-        self.origin.prev.next = item
-        item.prev = self.origin.prev
-        # new to tail
-        item.next = self.origin
-        self.origin.prev = item
+    def is_start_node(self, node: Node) -> bool:
+        return node is self.start_node
+
+    def add_in_tail(self, new_node: Node):
+        last_node: Node = self.start_node.prev
+        last_node.next = new_node
+        new_node.prev = last_node
+        new_node.next = self.start_node
+        self.start_node.prev = new_node
         self.list_length += 1
 
-    def delete_one(self, val: int) -> int:
-        n: Optional[Node] = self.origin.next
-        while n != self.origin:
-            if n.value == val:
-                n.prev.next = n.next
-                n.next.prev = n.prev
-                self.list_length -= 1
-                return 1
-            n = n.next
-        return 0
-
     def delete(self, val: int, all: bool = False):
-        if self.len() == 0: return
-        if all:
-            while self.delete_one(val): pass
-        else:
-            self.delete_one(val)
+        if self.len() == 0:
+            return
+        current_node: Node = self.start_node.next
+        while not self.is_start_node(current_node):
+            if current_node.value == val:
+                current_node.prev.next = current_node.next
+                current_node.next.prev = current_node.prev
+                self.list_length -= 1
+                if not all:
+                    return
+            current_node = current_node.next
 
     def list_vals(self) -> List[int]:
-        rl: List[int] = []
-        n: Node = self.origin.next
-        while n != self.origin:
-            rl.append(n.value)
-            n = n.next
-        return rl
+        return_list: List[int] = []
+        current_node: Node = self.start_node.next
+        while not self.is_start_node(current_node):
+            return_list.append(current_node.value)
+            current_node = current_node.next
+        return return_list
 
 
 class TestLinkedList2d(unittest.TestCase):
