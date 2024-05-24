@@ -9,18 +9,20 @@ class Node:
         self.next: Node = None
 
 
+class DummyNode(Node):
+    def __init__(self):
+        super().__init__()
+
+
 class LinkedList1d:
     def __init__(self):
-        self.start_node: Node = Node()
+        self.start_node: Node = DummyNode()
         self.start_node.prev = self.start_node
         self.start_node.next = self.start_node
         self.list_length: int = 0
 
     def len(self) -> int:
         return self.list_length
-
-    def is_start_node(self, node: Node) -> bool:
-        return node is self.start_node
 
     def add_in_tail(self, new_node: Node):
         last_node: Node = self.start_node.prev
@@ -34,7 +36,7 @@ class LinkedList1d:
         if self.len() == 0:
             return
         current_node: Node = self.start_node.next
-        while not self.is_start_node(current_node):
+        while not isinstance(current_node, DummyNode):
             if current_node.value == val:
                 current_node.prev.next = current_node.next
                 current_node.next.prev = current_node.prev
@@ -46,7 +48,7 @@ class LinkedList1d:
     def list_vals(self) -> List[int]:
         return_list: List[int] = []
         current_node: Node = self.start_node.next
-        while not self.is_start_node(current_node):
+        while not isinstance(current_node, DummyNode):
             return_list.append(current_node.value)
             current_node = current_node.next
         return return_list
