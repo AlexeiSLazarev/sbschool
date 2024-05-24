@@ -15,7 +15,7 @@ def sum_linked_lists2(ll1: LinkedList, ll2: LinkedList) -> LinkedList:
     """
 
     f: TextIO = sys.stderr
-    ll_res = LinkedList()
+    ll_res: LinkedList = LinkedList()
 
     if ll1 is None or ll2 is None:
         print("Bad data.", file=f)
