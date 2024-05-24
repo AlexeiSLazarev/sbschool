@@ -6,7 +6,7 @@ import sys
 import unittest
 
 
-def sum_linked_lists2(ll1: LinkedList, ll2: LinkedList) -> List[int]:
+def sum_linked_lists2(ll1: LinkedList, ll2: LinkedList) -> LinkedList:
     """
     The function takes two linked lists and if their lengths are equal,
     returns a new list where each element is the sum of corresponding elements from the input lists.
@@ -15,83 +15,98 @@ def sum_linked_lists2(ll1: LinkedList, ll2: LinkedList) -> List[int]:
     """
 
     f: TextIO = sys.stderr
+    ll_res = LinkedList()
 
     if ll1 is None or ll2 is None:
         print("Bad data.", file=f)
-        return []
+        return ll_res
 
     l1: int = ll1.len()
     l2: int = ll2.len()
 
     if l1 != l2:
         print("Lengths of lists are not equal.", file=f)
-        return []
+        return ll_res
 
     if l1 == 0:
         print("Lists are empty.", file=f)
-        return []
+        return ll_res
 
-    return [a + b for a, b in zip(ll1.list_vals(), ll2.list_vals())]
+    for a, b in zip(ll1.list_vals(), ll2.list_vals()):
+        ll_res.add_in_tail(Node(a + b))
+
+    return ll_res
 
 
-class TestSumLinkedLists(unittest.TestCase):
+class TestSumLinkedLists2(unittest.TestCase):
 
-    def test_sum_linked_lists2_bad_data(self):
-        stderr_backup = sys.stderr
-        sys.stderr = StringIO()
-        self.assertEqual(sum_linked_lists2(None, None), [])
-        self.assertEqual(sys.stderr.getvalue(), "Bad data.\n", "Summing None lists.")
-        sys.stderr = stderr_backup
+    def setUp(self):
+        # Redirect stderr to capture error messages
+        self.stderr = StringIO()
+        self.original_stderr = sys.stderr
+        sys.stderr = self.stderr
 
-    def test_sum_linked_lists2_unequal_lengths(self):
-        ll1 = LinkedList()
-        ll1.add_in_tail(Node(1))
-        ll1.add_in_tail(Node(2))
+    def tearDown(self):
+        # Reset stderr
+        sys.stderr = self.original_stderr
 
-        ll2 = LinkedList()
-        ll2.add_in_tail(Node(3))
+    def create_linked_list(self, values):
+        ll = LinkedList()
+        for value in values:
+            ll.add_in_tail(Node(value))
+        return ll
 
-        stderr_backup = sys.stderr
-        sys.stderr = StringIO()
+    def test_equal_length_positive_values(self):
+        ll1 = self.create_linked_list([1, 2, 3])
+        ll2 = self.create_linked_list([4, 5, 6])
+        expected = [5, 7, 9]
         result = sum_linked_lists2(ll1, ll2)
-        expected_result = []
-        self.assertEqual(result, expected_result)
-        self.assertEqual(sys.stderr.getvalue(), "Lengths of lists are not equal.\n", "Summing unequal lists.")
-        sys.stderr = stderr_backup
+        self.assertEqual(result.list_vals(), expected)
 
-    def test_sum_linked_lists2_empty_lists(self):
-        ll1 = LinkedList()
-        ll2 = LinkedList()
-        stderr_backup = sys.stderr
-        sys.stderr = StringIO()
+    def test_equal_length_negative_values(self):
+        ll1 = self.create_linked_list([-1, -2, -3])
+        ll2 = self.create_linked_list([-4, -5, -6])
+        expected = [-5, -7, -9]
         result = sum_linked_lists2(ll1, ll2)
-        self.assertEqual(result, [])
-        self.assertEqual(sys.stderr.getvalue(), "Lists are empty.\n", "Summing empty lists.")
-        sys.stderr = stderr_backup
+        self.assertEqual(result.list_vals(), expected)
 
-    def test_sum_linked_lists2(self):
-        ll1 = LinkedList()
-        ll1.add_in_tail(Node(1))
-        ll1.add_in_tail(Node(2))
-        ll1.add_in_tail(Node(3))
-
-        ll2 = LinkedList()
-        ll2.add_in_tail(Node(4))
-        ll2.add_in_tail(Node(5))
-        ll2.add_in_tail(Node(6))
-
-        stderr_backup = sys.stderr
-        sys.stderr = StringIO()
-
+    def test_equal_length_mixed_values(self):
+        ll1 = self.create_linked_list([1, -2, 3])
+        ll2 = self.create_linked_list([-4, 5, -6])
+        expected = [-3, 3, -3]
         result = sum_linked_lists2(ll1, ll2)
-        expected_result = [5, 7, 9]
-        self.assertEqual(result, expected_result)
-        self.assertEqual(sys.stderr.getvalue(), "", "Stderr should have an empty string.")
+        self.assertEqual(result.list_vals(), expected)
 
-        sys.stderr = stderr_backup
+    def test_empty_lists(self):
+        ll1 = self.create_linked_list([])
+        ll2 = self.create_linked_list([])
+        expected = []
+        result = sum_linked_lists2(ll1, ll2)
+        self.assertEqual(result.list_vals(), expected)
+        self.assertIn("Lists are empty.", self.stderr.getvalue())
 
+    def test_different_lengths(self):
+        ll1 = self.create_linked_list([1, 2])
+        ll2 = self.create_linked_list([1, 2, 3])
+        expected = []
+        result = sum_linked_lists2(ll1, ll2)
+        self.assertEqual(result.list_vals(), expected)
+        self.assertIn("Lengths of lists are not equal.", self.stderr.getvalue())
+
+    def test_none_list(self):
+        ll1 = None
+        ll2 = self.create_linked_list([1, 2, 3])
+        expected = []
+        result = sum_linked_lists2(ll1, ll2)
+        self.assertEqual(result.list_vals(), expected)
+        self.assertIn("Bad data.", self.stderr.getvalue())
+
+    def test_equal_length_zero_values(self):
+        ll1 = self.create_linked_list([0, 0, 0])
+        ll2 = self.create_linked_list([0, 0, 0])
+        expected = [0, 0, 0]
+        result = sum_linked_lists2(ll1, ll2)
+        self.assertEqual(result.list_vals(), expected)
 
 if __name__ == '__main__':
     unittest.main()
-
-
