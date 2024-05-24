@@ -2,23 +2,23 @@ from typing import Optional, List
 import unittest
 
 
-class BaseNode:
+class Node:
     def __init__(self, v: int):
         self.value: int = v
-        self.prev: Optional['BaseNode'] = None
-        self.next: Optional['BaseNode'] = None
+        self.prev: Node = None
+        self.next: Node = None
 
-
-class Node(BaseNode):
-    def __init__(self, v: int, dummy_flag: bool = False):
-        super().__init__(v)
-        self.dummy: bool = dummy_flag
+# the dummy flag is not needed!
+# class Node(BaseNode):
+#     def __init__(self, v: int, dummy_flag: bool = False):
+#         super().__init__(v)
+#         self.dummy: bool = dummy_flag
 
 
 class LinkedList1d:
 
     def __init__(self):
-        self.origin: Optional[Node] = Node(0, True)
+        self.origin: Optional[Node] = Node(0)
         self.origin.prev = self.origin
         self.origin.next = self.origin
         self.list_length: int = 0
@@ -37,7 +37,7 @@ class LinkedList1d:
 
     def delete_one(self, val: int) -> int:
         n: Optional[Node] = self.origin.next
-        while not n.dummy:
+        while n != self.origin:
             if n.value == val:
                 n.prev.next = n.next
                 n.next.prev = n.prev
@@ -55,8 +55,8 @@ class LinkedList1d:
 
     def list_vals(self) -> List[int]:
         rl: List[int] = []
-        n: Optional[Node] = self.origin.next
-        while not n.dummy:
+        n: Node = self.origin.next
+        while n != self.origin:
             rl.append(n.value)
             n = n.next
         return rl
