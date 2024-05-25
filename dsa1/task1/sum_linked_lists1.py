@@ -1,25 +1,33 @@
+from typing import Optional, Dict, Union
 from task1 import LinkedList, Node
-from typing import List, Dict, Union
 import unittest
 
 
-def sum_linked_lists(ll1: LinkedList, ll2: LinkedList) -> Dict[str, Union[List[int], str]]:
+def sum_linked_lists(ll1: Optional[LinkedList], ll2: Optional[LinkedList]) -> Dict[str, Union[LinkedList, str]]:
     """
     The function takes two linked lists and if their lengths are equal,
-    returns a new list where each element is the sum of corresponding elements from the input lists.
-    Function returns the result list and a message.
-    The message indicates success of processing or a risen problem.
+    returns a new linked list where each element is the sum of corresponding elements from the input lists.
+    Function returns a dictionary containing the result linked list and a message.
+    The message indicates the success of processing or a risen problem.
     """
 
+    result_list = LinkedList()
+
     if ll1 is None or ll2 is None:
-        return {"value": [], "message": "Bad data."}
+        return {"result": result_list, "message": "Bad data."}
 
     l1: int = ll1.len()
     l2: int = ll2.len()
 
-    if l1 != l2: return {"value": [], "message": "Lengths of lists are not equal."}
-    if l1 == 0: return {"value": [], "message": "Lists are empty."}
-    return {"value": [a + b for a, b in zip(ll1.list_vals(), ll2.list_vals())], "message": "Done."}
+    if l1 != l2:
+        return {"result": result_list, "message": "Lengths of lists are not equal."}
+    if l1 == 0:
+        return {"result": result_list, "message": "Lists are empty."}
+
+    for a, b in zip(ll1.list_vals(), ll2.list_vals()):
+        result_list.add_in_tail(Node(a + b))
+
+    return {"result": result_list, "message": "Done."}
 
 
 class TestSumLinkedLists(unittest.TestCase):
@@ -36,8 +44,11 @@ class TestSumLinkedLists(unittest.TestCase):
         ll2.add_in_tail(Node(6))
 
         result = sum_linked_lists(ll1, ll2)
-        self.assertEqual(result["value"], [5, 7, 9])
-        self.assertEqual(result["message"], "Done.")
+        result_list = result["result"]
+        message = result["message"]
+
+        self.assertEqual(result_list.list_vals(), [5, 7, 9])
+        self.assertEqual(message, "Done.")
 
     def test_sum_different_length(self):
         ll1 = LinkedList()
@@ -51,31 +62,43 @@ class TestSumLinkedLists(unittest.TestCase):
         ll2.add_in_tail(Node(6))
 
         result = sum_linked_lists(ll1, ll2)
-        self.assertEqual(result["value"], [])
-        self.assertEqual(result["message"], "Lengths of lists are not equal.")
+        result_list = result["result"]
+        message = result["message"]
+
+        self.assertEqual(result_list.list_vals(), [])
+        self.assertEqual(message, "Lengths of lists are not equal.")
 
     def test_sum_empty_lists(self):
         ll1 = LinkedList()
         ll2 = LinkedList()
 
         result = sum_linked_lists(ll1, ll2)
-        self.assertEqual(result["value"], [])
-        self.assertEqual(result["message"], "Lists are empty.")
+        result_list = result["result"]
+        message = result["message"]
+
+        self.assertEqual(result_list.list_vals(), [])
+        self.assertEqual(message, "Lists are empty.")
 
     def test_sum_none_list(self):
         ll1 = None
         ll2 = LinkedList()
 
         result = sum_linked_lists(ll1, ll2)
-        self.assertEqual(result["value"], [])
-        self.assertEqual(result["message"], "Bad data.")
+        result_list = result["result"]
+        message = result["message"]
+
+        self.assertEqual(result_list.list_vals(), [])
+        self.assertEqual(message, "Bad data.")
 
         ll1 = LinkedList()
         ll2 = None
 
         result = sum_linked_lists(ll1, ll2)
-        self.assertEqual(result["value"], [])
-        self.assertEqual(result["message"], "Bad data.")
+        result_list = result["result"]
+        message = result["message"]
+
+        self.assertEqual(result_list.list_vals(), [])
+        self.assertEqual(message, "Bad data.")
 
 
 if __name__ == '__main__':
