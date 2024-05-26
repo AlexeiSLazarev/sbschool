@@ -98,19 +98,19 @@ class Stack(LinkedList1d):
 
 class Queue:
     def __init__(self):
-        self.stack1 = Stack()
-        self.stack2 = Stack()
+        self.stack1: Stack = Stack()
+        self.stack2: Stack = Stack()
 
-    def enqueue(self, item):
+    def enqueue(self, item: any) -> None:
         self.stack1.push(item)
 
-    def dequeue(self):
+    def dequeue(self) -> any:
         if self.stack2.size() == 0:
             while self.stack1.size() > 0:
                 self.stack2.push(self.stack1.pop())
         return self.stack2.pop()
 
-    def size(self):
+    def size(self) -> int:
         return self.stack1.size() + self.stack2.size()
 
 
