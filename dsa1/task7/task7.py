@@ -1,4 +1,4 @@
-from typing import Any, List
+from typing import Any, List, Optional
 
 
 class Node:
@@ -75,7 +75,9 @@ class OrderedList:
                     current_node = current_node.prev
                 self.insert_new_node_after(new_node, self.start_node)
 
-    def find(self, val: Any) -> Node:
+    def find(self, val: Any) -> Optional[Any]:
+        if self.len() == 0:
+            return None
         current_node: Node = self.start_node.next
         while not isinstance(current_node, DummyNode):
             comp_res = self.compare(current_node.value, val)
@@ -89,6 +91,8 @@ class OrderedList:
         return None
 
     def delete(self, val: Any):
+        if self.len() == 0:
+            return
         current_node: Node = self.start_node.next
         while not isinstance(current_node, DummyNode):
             if current_node.value == val:
@@ -110,6 +114,8 @@ class OrderedList:
 
     def get_all(self) -> List[Node]:
         r = []
+        if self.len() == 0:
+            return r
         node = self.start_node.next
         while not isinstance(node, DummyNode):
             r.append(node)
@@ -118,6 +124,8 @@ class OrderedList:
 
     def list_vals(self) -> List[Any]:
         return_list: List[int] = []
+        if self.len() == 0:
+            return return_list
         current_node: Node = self.start_node.next
         while not isinstance(current_node, DummyNode):
             return_list.append(current_node.value)
