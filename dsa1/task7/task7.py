@@ -2,26 +2,20 @@ from typing import Any, List, Optional
 
 
 class Node:
-    def __init__(self, value: Any = None):
-        self.value: Any = value
-        self.prev: 'Node' = None
-        self.next: 'Node' = None
-
-
-class DummyNode(Node):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, v: Any):
+        self.value = v
+        self.prev: Optional[Node] = None
+        self.next: Optional[Node] = None
 
 
 class OrderedList:
     def __init__(self, asc: bool = True):
-        self.init()
-        self.__ascending = asc
+        self.init(asc)
 
-    def init(self):
-        self.start_node: Node = DummyNode()
-        self.start_node.prev = self.start_node
-        self.start_node.next = self.start_node
+    def init(self, asc: bool):
+        self.head: Optional[Node] = None
+        self.tail: Optional[Node] = None
+        self.__ascending = asc
         self.list_length: int = 0
 
     def compare(self, v1: Any, v2: Any) -> int:
@@ -31,113 +25,164 @@ class OrderedList:
             return 1
         return 0
 
-    def insert_new_node_after(self, new_node: Node, left_node: Node):
-        right_node: Node = left_node.next
-
-        left_node.next = new_node
-        new_node.next = right_node
-        new_node.prev = left_node
-        right_node.prev = new_node
-
+    def add_in_head(self, newNode: Node):
+        if self.head is None:
+            self.head = newNode
+            self.tail = newNode
+        else:
+            newNode.next = self.head
+            self.head.prev = newNode
+            self.head = newNode
         self.list_length += 1
 
-    def insert_new_node_before(self, new_node: Node, right_node: Node):
-        left_node: Node = right_node.prev
-
-        left_node.next = new_node
-        new_node.next = right_node
-        new_node.prev = left_node
-        right_node.prev = new_node
-
+    def add_in_tail(self, item: Node):
+        if self.head is None:
+            self.head = item
+            item.prev = None
+            item.next = None
+        else:
+            self.tail.next = item
+            item.prev = self.tail
+        self.tail = item
         self.list_length += 1
+
+    def insert_before(self, node: Node, new_node: Node):
+        if self.head == node:
+            new_node.next = node
+            node.prev = new_node
+            self.head = new_node
+        else:
+            prev_node: Node = node.prev
+            prev_node.next = new_node
+            new_node.prev = prev_node
+            node.prev = new_node
+            new_node.next = node
+        self.list_length += 1
+
+    def insert_after(self, node: Node, new_node: Node):
+        if self.tail == node:
+            new_node.prev = node
+            node.next = new_node
+            self.tail = new_node
+        else:
+            next_node: Node = node.next
+            next_node.prev = new_node
+            new_node.next = next_node
+            node.next = new_node
+            new_node.prev = node
+        self.list_length += 1
+
+    def add_ascending(self, value: Any):
+        new_node: Node = Node(value)
+        if self.list_length == 0:
+            self.add_in_tail(new_node)
+            return
+        current_node: Node = self.head
+        while current_node is not None:
+            if self.compare(value, current_node.value) in (-1, 0):
+                self.insert_before(current_node, new_node)
+                return
+            current_node = current_node.next
+        self.add_in_tail(new_node)
+
+    def add_descending(self, value: Any):
+        new_node: Node = Node(value)
+        if self.list_length == 0:
+            self.add_in_tail(new_node)
+            return
+        current_node: Node = self.head
+        while current_node is not None:
+            if self.compare(value, current_node.value) in (1, 0):
+                self.insert_before(current_node, new_node)
+                return
+            current_node = current_node.next
+        self.add_in_tail(new_node)
 
     def add(self, value: Any):
-        new_node = Node(value)
-        if self.len() == 0:
-            self.insert_new_node_after(new_node, self.start_node)
+        if self.__ascending:
+            self.add_ascending(value)
         else:
-            if self.__ascending:
-                current_node: Node = self.start_node.next
-                while not isinstance(current_node, DummyNode):
-                    comp_res: int = self.compare(new_node.value, current_node.value)
-                    if comp_res == -1 or comp_res == 0:
-                        self.insert_new_node_before(new_node, current_node)
-                        return
-                    current_node = current_node.next
-                self.insert_new_node_before(new_node, self.start_node)
-            else:
-                current_node: Node = self.start_node.prev
-                while not isinstance(current_node, DummyNode):
-                    comp_res: int = self.compare(new_node.value, current_node.value)
-                    if comp_res == -1 or comp_res == 0:
-                        self.insert_new_node_after(new_node, current_node)
-                        return
-                    current_node = current_node.prev
-                self.insert_new_node_after(new_node, self.start_node)
+            self.add_descending(value)
 
-    def find(self, val: Any) -> Optional[Any]:
-        if self.len() == 0:
-            return None
-        current_node: Node = self.start_node.next
-        while not isinstance(current_node, DummyNode):
-            comp_res = self.compare(current_node.value, val)
-            if comp_res == 0:
+    def find_ascending(self, val: Any) -> Optional[Node]:
+        current_node: Node = self.head
+        while current_node is not None:
+            if current_node.value == val:
                 return current_node
-            if self.__ascending and comp_res == 1:
-                return None
-            if not self.__ascending and comp_res == -1:
+            elif self.compare(current_node.value, val) == 1:
                 return None
             current_node = current_node.next
         return None
 
-    def delete(self, val: Any):
-        if self.len() == 0:
-            return
-        current_node: Node = self.start_node.next
-        while not isinstance(current_node, DummyNode):
+    def find_descending(self, val: Any) -> Optional[Node]:
+        current_node: Node = self.head
+        while current_node is not None:
             if current_node.value == val:
-                current_node.prev.next = current_node.next
-                current_node.next.prev = current_node.prev
-                self.list_length -= 1
-                return
+                return current_node
+            elif self.compare(current_node.value, val) == -1:
+                return None
             current_node = current_node.next
+        return None
+
+    def find(self, val: Any) -> Optional[Node]:
+        if self.len() == 0:
+            return None
+        if self.__ascending:
+            return self.find_ascending(val)
+        return self.find_descending(val)
+
+    def delete(self, val: Any):
+        if self.list_length == 0:
+            return
+        node: Node = self.find(val)
+        if node is not None:
+            if node == self.head:
+                self.head = node.next
+                if self.head:
+                    self.head.prev = None
+                else:
+                    self.tail = None
+            elif node == self.tail:
+                self.tail = node.prev
+                if self.tail:
+                    self.tail.next = None
+                else:
+                    self.head = None
+            else:
+                prev_node = node.prev
+                next_node = node.next
+                prev_node.next = next_node
+                next_node.prev = prev_node
+            self.list_length -= 1
 
     def clean(self, asc: bool):
-        self.__ascending = asc
-        self.init()
-
-    def __len__(self) -> int:
-        return self.list_length
+        self.init(asc)
 
     def len(self) -> int:
         return self.list_length
 
     def get_all(self) -> List[Node]:
         r = []
-        if self.len() == 0:
-            return r
-        node = self.start_node.next
-        while not isinstance(node, DummyNode):
+        node = self.head
+        while node is not None:
             r.append(node)
             node = node.next
         return r
 
     def list_vals(self) -> List[Any]:
-        return_list: List[int] = []
-        if self.len() == 0:
-            return return_list
-        current_node: Node = self.start_node.next
-        while not isinstance(current_node, DummyNode):
-            return_list.append(current_node.value)
-            current_node = current_node.next
-        return return_list
+        rl: List[Any] = []
+        n: Optional[Node] = self.head
+        while n:
+            rl.append(n.value)
+            n = n.next
+        return rl
 
 
 class OrderedStringList(OrderedList):
     def __init__(self, asc: bool = True):
         super(OrderedStringList, self).__init__(asc)
 
-    def compare(self, v1: str, v2: str):
+    def compare(self, v1: str, v2: str) -> int:
         v1 = v1.strip()
         v2 = v2.strip()
         if v1 < v2:

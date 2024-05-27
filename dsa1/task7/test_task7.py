@@ -22,15 +22,16 @@ class TestOrderedList(unittest.TestCase):
         self.assertEqual(ord_list.len(), 4)
         self.assertListEqual(ord_list.list_vals(), [1, 1, 1, 1])
 
-    def test_asc_desc(self):
+    def test_asc(self):
         ord_list = OrderedList(True)
-        ord_list.add(1)
         ord_list.add(4)
+        ord_list.add(1)
         ord_list.add(2)
         ord_list.add(3)
         self.assertEqual(ord_list.len(), 4)
         self.assertListEqual(ord_list.list_vals(), [1, 2, 3, 4])
 
+    def test_desc(self):
         ord_list = OrderedList(False)
         ord_list.add(1)
         ord_list.add(4)
@@ -178,6 +179,13 @@ class TestOrderedList(unittest.TestCase):
         self.assertEqual(ord_list.len(), 3)
         self.assertListEqual(ord_list.list_vals(), [3, 2, 1])
 
+        ord_list = OrderedList(False)
+        ord_list.add(1)
+        ord_list.add(2)
+        ord_list.add(3)
+        self.assertEqual(ord_list.len(), 3)
+        self.assertListEqual(ord_list.list_vals(), [3, 2, 1])
+
     # Find tests
     def test_find_ascending(self):
         ord_list = OrderedList(True)
@@ -210,6 +218,7 @@ class TestOrderedList(unittest.TestCase):
         ord_list.add(1)
         ord_list.add(2)
         ord_list.add(3)
+        self.assertListEqual(ord_list.list_vals(), [3, 2, 1])
         ord_list.delete(2)
         self.assertEqual(ord_list.len(), 2)
         self.assertListEqual(ord_list.list_vals(), [3, 1])
