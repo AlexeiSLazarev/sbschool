@@ -243,7 +243,7 @@ class TestOrderedStringList(unittest.TestCase):
         ord_list.add("Hello")
         ord_list.add("World")
         self.assertEqual(ord_list.len(), 2)
-        self.assertListEqual(ord_list.list_vals(), ["World", "Hello",])
+        self.assertListEqual(ord_list.list_vals(), ["World", "Hello", ])
 
     def test_add_val_to_many_elements(self):
         ord_list = OrderedStringList()
@@ -380,7 +380,6 @@ class TestOrderedStringList(unittest.TestCase):
         ord_list.delete("Banana")
         self.assertEqual(ord_list.len(), 2)
         self.assertListEqual(ord_list.list_vals(), ["Cherry", "Apple"])
-
 
 
 if __name__ == '__main__':

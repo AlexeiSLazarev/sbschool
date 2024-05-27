@@ -3,7 +3,7 @@ from typing import Any, List, Optional
 
 class Node:
     def __init__(self, v: Any):
-        self.value = v
+        self.value: Any = v
         self.prev: Optional[Node] = None
         self.next: Optional[Node] = None
 
@@ -12,10 +12,10 @@ class OrderedList:
     def __init__(self, asc: bool = True):
         self.init(asc)
 
-    def init(self, asc: bool):
+    def init(self, asc: bool) -> None:
         self.head: Optional[Node] = None
         self.tail: Optional[Node] = None
-        self.__ascending = asc
+        self.__ascending: bool = asc
         self.list_length: int = 0
 
     def compare(self, v1: Any, v2: Any) -> int:
@@ -25,7 +25,7 @@ class OrderedList:
             return 1
         return 0
 
-    def add_in_head(self, newNode: Node):
+    def add_in_head(self, newNode: Node) -> None:
         if self.head is None:
             self.head = newNode
             self.tail = newNode
@@ -35,7 +35,7 @@ class OrderedList:
             self.head = newNode
         self.list_length += 1
 
-    def add_in_tail(self, item: Node):
+    def add_in_tail(self, item: Node) -> None:
         if self.head is None:
             self.head = item
             item.prev = None
@@ -46,38 +46,38 @@ class OrderedList:
         self.tail = item
         self.list_length += 1
 
-    def insert_before(self, node: Node, new_node: Node):
+    def insert_before(self, node: Node, new_node: Node) -> None:
         if self.head == node:
             new_node.next = node
             node.prev = new_node
             self.head = new_node
         else:
-            prev_node: Node = node.prev
+            prev_node: Node = node.prev  # type: ignore
             prev_node.next = new_node
             new_node.prev = prev_node
             node.prev = new_node
             new_node.next = node
         self.list_length += 1
 
-    def insert_after(self, node: Node, new_node: Node):
+    def insert_after(self, node: Node, new_node: Node) -> None:
         if self.tail == node:
             new_node.prev = node
             node.next = new_node
             self.tail = new_node
         else:
-            next_node: Node = node.next
+            next_node: Node = node.next  # type: ignore
             next_node.prev = new_node
             new_node.next = next_node
             node.next = new_node
             new_node.prev = node
         self.list_length += 1
 
-    def add_ascending(self, value: Any):
+    def add_ascending(self, value: Any) -> None:
         new_node: Node = Node(value)
         if self.list_length == 0:
             self.add_in_tail(new_node)
             return
-        current_node: Node = self.head
+        current_node: Node = self.head  # type: ignore
         while current_node is not None:
             if self.compare(value, current_node.value) in (-1, 0):
                 self.insert_before(current_node, new_node)
@@ -85,12 +85,12 @@ class OrderedList:
             current_node = current_node.next
         self.add_in_tail(new_node)
 
-    def add_descending(self, value: Any):
+    def add_descending(self, value: Any) -> None:
         new_node: Node = Node(value)
         if self.list_length == 0:
             self.add_in_tail(new_node)
             return
-        current_node: Node = self.head
+        current_node: Node = self.head  # type: ignore
         while current_node is not None:
             if self.compare(value, current_node.value) in (1, 0):
                 self.insert_before(current_node, new_node)
@@ -98,14 +98,14 @@ class OrderedList:
             current_node = current_node.next
         self.add_in_tail(new_node)
 
-    def add(self, value: Any):
+    def add(self, value: Any) -> None:
         if self.__ascending:
             self.add_ascending(value)
         else:
             self.add_descending(value)
 
     def find_ascending(self, val: Any) -> Optional[Node]:
-        current_node: Node = self.head
+        current_node: Node = self.head  # type: ignore
         while current_node is not None:
             if current_node.value == val:
                 return current_node
@@ -115,7 +115,7 @@ class OrderedList:
         return None
 
     def find_descending(self, val: Any) -> Optional[Node]:
-        current_node: Node = self.head
+        current_node: Node = self.head  # type: ignore
         while current_node is not None:
             if current_node.value == val:
                 return current_node
@@ -131,10 +131,10 @@ class OrderedList:
             return self.find_ascending(val)
         return self.find_descending(val)
 
-    def delete(self, val: Any):
+    def delete(self, val: Any) -> None:
         if self.list_length == 0:
             return
-        node: Node = self.find(val)
+        node: Optional[Node] = self.find(val)
         if node is not None:
             if node == self.head:
                 self.head = node.next
@@ -149,21 +149,21 @@ class OrderedList:
                 else:
                     self.head = None
             else:
-                prev_node = node.prev
-                next_node = node.next
+                prev_node: Node = node.prev  # type: ignore
+                next_node: Node = node.next  # type: ignore
                 prev_node.next = next_node
                 next_node.prev = prev_node
             self.list_length -= 1
 
-    def clean(self, asc: bool):
+    def clean(self, asc: bool) -> None:
         self.init(asc)
 
     def len(self) -> int:
         return self.list_length
 
     def get_all(self) -> List[Node]:
-        r = []
-        node = self.head
+        r: List[Node] = []
+        node: Optional[Node] = self.head
         while node is not None:
             r.append(node)
             node = node.next
@@ -190,3 +190,5 @@ class OrderedStringList(OrderedList):
         if v1 > v2:
             return 1
         return 0
+
+
