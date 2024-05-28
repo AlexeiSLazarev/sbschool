@@ -87,6 +87,7 @@ class TestPowerSet(unittest.TestCase):
             large_set1.put(i)
             if i % 2 == 0:
                 large_set2.put(i)
+
         start_time = time()
         large_union = large_set1.union(large_set2)
         self.assertTrue(time() - start_time < 2)
