@@ -1,0 +1,35 @@
+data_type - userInputDataType (user_input_data_type)
+// Тип данных, введенный пользователем
+
+a - firstLetterPosition (first_letter_position)
+// Позиция первой буквы в алфавите
+
+year - inputYear (input_year)
+// Введенный пользователем год
+
+a2 - binaryNumber1 (binary_number1)
+// Двоичное представление первого числа
+
+rew - rewards (rewards)
+// Список для хранения общего вознаграждения в каждом эпизоде
+
+epi - episode (episode)
+// Номер текущего эпизода
+
+state - currentState (current_state)
+// Текущее состояние среды
+
+t - timeStep (time_step)
+// Текущий шаг времени в эпизоде
+
+action - selectedAction (selected_action)
+// Выбранное действие на текущем шаге
+
+reward - receivedReward (received_reward)
+// Полученное вознаграждение за выбранное действие
+
+done - isDone (is_done)
+// Флаг завершения эпизода
+
+x - stateTensor (state_tensor)
+// Тензор состояния, преобразованный из numpy массива
