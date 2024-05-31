@@ -1,0 +1,58 @@
+7.1.
+dummy - is_dummy
+not_done - is_done
+error_occurred - is_error
+quest_finished - is_quest_finished
+empty - is_empty
+
+
+7.2.
+is_win - success
+quest_finished - done
+
+
+7.3.
+i - row
+j - column
+//при обращении к элементам 2d матрицы
+
+7.4.
+first_item - last_item
+is_started - is_not_started
+is_visible - is_not_visible
+
+7.5.
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            temp = arr[j] # ненужная временная переменная
+            if temp > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], temp
+    return arr
+
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+    return arr
+
+def filter_and_square(numbers):
+    result = []
+    for number in numbers:
+        is_divisible_by_2 = (number % 2 == 0)  # ненужная временная переменная
+        is_divisible_by_3 = (number % 3 == 0)  # ненужная временная переменная
+        if is_divisible_by_2 and is_divisible_by_3:
+            temp = number ** 2  # ненужная временная переменная
+            result.append(temp)
+    return result
+
+def filter_and_square(numbers):
+    result = []
+    for number in numbers:
+        if number % 2 == 0 and number % 3 == 0:
+            result.append(number ** 2)
+    return result
+
