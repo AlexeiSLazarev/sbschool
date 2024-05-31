@@ -1,0 +1,52 @@
+6.1.
+health - dwarfDefenderHealth (dwarf_defender_health)
+// здоровье какого-либо юнита - здоровье гнома-защитников
+
+area - orcKingdomArea (orc_kingdom_area)
+// площадь (карты) - площадь государства орков
+
+mana - manaElfWizard (mana_elf_wizard)
+// кол-во маны эльфов-волшебников
+
+defenders - ogresDefenders (dwarf_defenders)
+// список любых защитников - список конкретного типа защитников - огров-защитников
+
+numberOfBuildings - elfNumberOfBuildings (dwarf_builder_number_of_buildings)
+// количество любых построек - количество построек конкретного типа юнитов - эльфов
+
+6.2.
+craftingJobQueue (crafting_job_queue)
+// очередь задач по крафту
+
+characterStateMachine (character_state_machine)
+// конечный автомат для управления состояниями персонажа
+
+combatEventListener (combat_event_listener)
+// обработчик событий боевых действий
+
+navigationGraph (navigation_graph)
+// граф для навигации персонажей
+
+6.3.
+swordName(sword_name)
+// в def create_sword(self, name, damage, durability):
+
+currentHealth(current_health)
+// в def update_health(self, health_change):
+
+self.active_quests
+// в class QuestHandler:
+//    def __init__(self):
+
+
+6.4.
+
+a - firstLetterPosition (first_letter_position)
+
+year - inputYear (input_year)
+
+a2 - binaryNumber1 (binary_number1)
+
+t - timeStep (time_step)
+
+x - stateTensor (state_tensor)
