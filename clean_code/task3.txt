@@ -5,7 +5,6 @@ error_occurred - is_error
 quest_finished - is_quest_finished
 empty - is_empty
 
-
 7.2.
 is_win - success
 quest_finished - done
