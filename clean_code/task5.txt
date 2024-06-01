@@ -1,0 +1,25 @@
+3.1
+RayCasting - RayCaster
+
+InventoryProcessor - Inventory
+
+QuestController - Quest
+
+GameInfo - GameDetails
+
+SkillData - Skill
+
+3.2
+ray_cast - cast_rays
+
+get_action - determine_action
+
+virtual_movement - simulate_movement
+
+check_wall_collision - detect_wall_collision
+
+d2t - distance_to_target
+
+process_damage - calculate_damage
+
+manage_monster_spawn - spawn_monster
