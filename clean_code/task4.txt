@@ -1,0 +1,23 @@
+recordNum - recordCount
+
+obs - obstacles_copy
+
+dmin - min_distance
+
+nnear - nearest_node
+
+i - node_index
+
+n - last_node_index
+
+var1 - firstVariable
+
+n - current_node_count
+
+x - sample_x
+
+newpos - current_position
+
+ninit - start_node_index
+
+parent - parent_node_index
