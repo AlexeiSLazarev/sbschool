@@ -1,0 +1,24 @@
+3.1.
+class Complex
+    def from_real_number(real)
+    def from_imaginary_number(imaginary)
+    def from_polar_coordinates(magnitude, phase)
+
+class Point
+    def from_cartesian_coordinates(x, y)
+    def from_polar_coordinates(radius, angle)
+
+class User
+    def from_name_and_email(name, email)
+    def from_name_email_and_age(name, email, age)
+
+3.2.
+// не сильно изведанная для меня область
+
+class Logger():
+    @abstractmethod
+    def log(self, message)
+
+class ConsoleLogger(Logger):
+    def log(self, message):
+        print(message)
