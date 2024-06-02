@@ -13,8 +13,8 @@ obsnum=50 - NUMBER_OF_OBSTACLES = 50
 self.rect.bottom >= 300 - self.rect.bottom >= BOTTOM_HEIGHT
 // магическая констана вынесена в нормальную константу
 
-gravity_val = 9.8 - GRAVITY = 9.8
-//буквы капитализированы, приведено к физическому названию
+gravity_val = 15 - GRAVITY_PIXELS_PER_SECOND = 15
+//буквы капитализированы, название конкретизировано
 
 enemy_spd = 3 - ENEMY_SPEED = 3
 // буквы капитализированы, имя стало более читаемым
