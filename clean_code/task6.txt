@@ -1,0 +1,35 @@
+new_env - create_new_environment
+// создание нового мира
+
+update - update_environment
+// обновить состояни мира
+
+run - run_the_world
+// запустить жизненный цикл мира
+
+draw - draw_map
+// отрисовать карту
+
+virtual_movement - move_agent
+// изменить координаты агента
+
+check_wall - check_collision_with_walls
+// определить наличие стены в выбранном направлении
+
+check_exit - is_exit
+// определить достижение искомой позиции
+
+pos - get_position
+// получить кооридинта местоположения агента
+
+d2t - calculate_distance_to_target
+// вычислить расстояние до цели
+
+r_d - get_ray_distance
+// получить длину отрезка до препятствия
+
+player_input - is_jump_by_keyboard_space_key
+// если был нажат пробел - агент должен прыгнуть
+
+animation_state - draw_world_state
+// отрисовать текущее состояние мира
