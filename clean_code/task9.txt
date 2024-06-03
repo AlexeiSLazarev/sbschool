@@ -1,0 +1,132 @@
+// Пример 1
+
+// Было
+def calculate_average(numbers):
+  total = 0
+  for number in numbers:
+    total += number
+  average = total / len(numbers)
+  return average
+
+// Стало
+
+# 1. Аннотация типов -> проверка линтерами
+def calculate_average(numbers: List[Union[int, float]]) -> float:
+    if len(numbers) == 0:
+        raise ValueError("Список чисел не должен быть пустым")
+
+    total: float = 0.0
+    for number in numbers:
+        # 2. Проверяем тип элемента - должны быть числа
+        if not isinstance(number, (int, float)):
+            raise TypeError("Все элементы списка должны быть числами")
+        # 3. Явно преобразуем тип к float
+        total += float(number)
+        # 4. Проверяем переполнение при сложении
+        # 5. Проверяем промежуточный результат
+        if total > sys.float_info.max:
+            raise OverflowError("Переполнение числа с плавающей запятой при сложении")
+
+    # Явно преобразуем тип
+    average: float = total / float(len(numbers))
+
+    # 6. Предупреждаем ошибки округления
+    average = round(average, 3)
+
+    return average
+
+// Пример 2
+// Было
+def sum_linked_lists(ll1: Optional[LinkedList], ll2: Optional[LinkedList]) -> Dict[str, Union[LinkedList, str]]:
+
+  result_list = LinkedList()
+
+  if ll1 is None or ll2 is None:
+    return {"result": result_list, "message": "Bad data."}
+
+  l1: int = ll1.len()
+  l2: int = ll2.len()
+
+  if l1 != l2:
+    return {"result": result_list, "message": "Lengths of lists are not equal."}
+  if l1 == 0:
+    return {"result": result_list, "message": "Lists are empty."}
+
+  for a, b in zip(ll1.list_vals(), ll2.list_vals()):
+    result_list.add_in_tail(Node(a + b))
+
+  return {"result": result_list, "message": "Done."}
+
+// Стало
+from typing import Optional, Dict, Union
+
+# 7. Стандартные сообщения и ключи вынесены в строковые константы
+BAD_DATA_MESSAGE = "Bad data."
+LENGTHS_NOT_EQUAL_MESSAGE = "Lengths of lists are not equal."
+LISTS_EMPTY_MESSAGE = "Lists are empty."
+DONE_MESSAGE = "Done."
+RESULT_KEY = "result"
+MESSAGE_KEY = "message"
+
+# 8. Проверка поддержки Unicode
+try:
+    unicode_test = "тест"
+except UnicodeError:
+    raise RuntimeError("Unicode not supported")
+
+def sum_linked_lists(ll1: Optional[LinkedList], ll2: Optional[LinkedList]) -> Dict[str, Union[LinkedList, str]]:
+
+    result_list = LinkedList()
+
+    if ll1 is None or ll2 is None:
+        return {RESULT_KEY: result_list, MESSAGE_KEY: BAD_DATA_MESSAGE}
+
+    l1: int = ll1.len()
+    l2: int = ll2.len()
+
+    if l1 != l2:
+        return {RESULT_KEY: result_list, MESSAGE_KEY: LENGTHS_NOT_EQUAL_MESSAGE}
+    if l1 == 0:
+        return {RESULT_KEY: result_list, MESSAGE_KEY: LISTS_EMPTY_MESSAGE}
+
+    for a, b in zip(ll1.list_vals(), ll2.list_vals()):
+        result_list.add_in_tail(Node(a + b))
+
+    return {RESULT_KEY: result_list, MESSAGE_KEY: DONE_MESSAGE}
+
+
+// Пример 3.
+import gettext
+
+# 9. Подключение локалей
+# Load translation for the current locale and install it
+locale = gettext.translation("my_app", localedir="locales", fallback=True)
+locale.install()
+
+# 10. Вынесение строковых констант
+GREETINGS_TEMPLATE = "Hello, %(username)s!"
+USERNAME_KEY = "username"
+INVALID_USERNAME = "Invalid username."
+INPUT_YOUR_NAME_MESSAGE = "Enter your name: "
+
+def greet_user(username: str) -> str:
+
+    # 11. Преобразование входного значения
+    if not username.strip():
+        return gettext.gettext(INVALID_USERNAME)
+
+    # 12. Преобразование типа
+    if not isinstance(username, str):
+        username = str(username)
+
+    # Translate the greeting based on the current locale
+    greeting = gettext.gettext(GREETINGS_TEMPLATE) % {USERNAME_KEY: username}
+
+    # Return the localized greeting
+    return greeting
+
+
+user_input = input(INPUT_YOUR_NAME_MESSAGE)
+localized_greeting = greet_user(user_input)
+print(localized_greeting)
+
