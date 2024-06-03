@@ -1,0 +1,111 @@
+// Пример 1.
+
+// Было
+    def cost(self, n):
+        ninit = 0
+        n = n
+        parent = self.parent[n]
+        c = 0
+        while n is not ninit:
+            c = c + self.distance(n, parent)
+            n = parent
+            if n is not ninit:
+                parent = self.parent[n]
+        return c
+
+// Стало
+def calculate_distance_between_nodes(self, node: int) -> float: //
+    initial_node: int = 0
+    total_cost: float = 0.0
+    if node == initial_node:
+        return total_cost
+
+    parent_node: int = self.parent.get(node, None)
+    if parent_node is None:
+        raise ValueError(f"Parent of node {node} is not defined")
+
+    while node != initial_node:
+        distance_to_parent: float = self.distance(node, parent_node)
+        if distance_to_parent < 0:
+            raise ValueError(f"Distance from node {node} to its parent is negative")
+
+        total_cost += distance_to_parent
+        node = parent_node
+
+        if node == initial_node:
+            break
+
+        parent_node = self.parent.get(node, None)
+        if parent_node is None:
+            raise ValueError(f"Parent of node {node} is not defined")
+
+    if total_cost < 0:
+        raise ValueError("Total cost calculated is negative")
+
+    initial_node = None
+    parent_node = None
+    distance_to_parent = None
+
+    return total_cost
+
+// 1. Явно указан тип входной переменной node: int
+// 2. Явно указан тип переменной initial_node: int
+// 3. Явно указан тип переменной total_cost: float
+// 4. Явно указан тип переменной distance_to_parent: float
+// 5. Переменная проинициализирована прямо перед использованием: initial_node: int = 0
+// 6. Переменная проинициализирована прямо перед использованием: total_cost: float = 0.0
+// 7. Добавлена проверка недопустимого значения: if distance_to_parent < 0:
+// 8. Добавлена проверка недопустимого значения: if total_cost < 0:
+// 9. Добавлена проверка недопустимого значения: if parent_node is None:
+// 10. После использования переменной присвоено недопустимое значение: initial_node = None
+// 11. После использования переменной присвоено недопустимое значение: parent_node = None
+// 12. После использования переменной присвоено недопустимое значение: distance_to_parent = None
+
+
+Пример 2.
+
+// Было
+def makeobs(self):
+    obs = []
+    for i in range(0, self.obsNum):
+        rectang = None
+        startgoalcol = True
+        while startgoalcol:
+            upper = self.makeRandomRect()
+            rectang = pygame.Rect(upper, (self.obsDim, self.obsDim))
+            if rectang.collidepoint(self.start) or rectang.collidepoint(self.goal):
+                startgoalcol = True
+            else:
+                startgoalcol = False
+            obs.append(rectang)
+        self.obstacles = obs.copy()
+    return obs
+
+// Стало
+import pygame
+from typing import List
+
+def make_obstacles(self) -> List[pygame.Rect]:
+    obstacles: List[pygame.Rect] = []
+    for _ in range(self.obsNum):
+        rect: pygame.Rect = None
+        is_collision: bool = True
+        while is_collision:
+            upper_left: tuple[int, int] = self.makeRandomRect()
+            rect = pygame.Rect(upper_left, (self.obsDim, self.obsDim))
+            if rect.collidepoint(self.start) or rect.collidepoint(self.goal):
+                is_collision = True
+            else:
+                is_collision = False
+        obstacles.append(rect)
+    self.obstacles = obstacles.copy()
+    if len(obstacles) != self.obsNum:
+        raise ValueError("Number of created obstacles does not match obsNum")
+
+    return obstacles
+
+// 13. Явно указан тип переменной obstacles: List[pygame.Rect]
+// 14. Явно указан тип переменной rect: pygame.Rect
+// 15. Явно указан тип переменной is_collision: bool
+// 16. Явно указан тип переменной upper_left: tuple[int, int]
+// 17. добавлена проверка что все препятствия созданы if len(obstacles) != self.obsNum:
