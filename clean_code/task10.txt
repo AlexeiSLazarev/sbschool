@@ -108,4 +108,4 @@ def make_obstacles(self) -> List[pygame.Rect]:
 // 14. Явно указан тип переменной rect: pygame.Rect
 // 15. Явно указан тип переменной is_collision: bool
 // 16. Явно указан тип переменной upper_left: tuple[int, int]
-// 17. добавлена проверка что все препятствия созданы if len(obstacles) != self.obsNum:
+// 17. Добавлена проверка что все препятствия созданы if len(obstacles) != self.obsNum:
