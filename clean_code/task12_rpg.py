@@ -1,0 +1,88 @@
+from random import randint
+import json
+
+DEFAULT_PLAYER_HEALTH = 30
+DEFAULT_SWORD_SHARPNESS = 30
+DEFAULT_SHIELD_DURABILITY = 5
+DEFAULT_NUM_OF_HEALTH_POTIONS = 3
+DEFAULT_DRAGON_HEALTH = 100
+DEFAULT_SPELL_BLAST_DAMAGE = 15
+HEALTH_POTION_RECOVERY = 10
+HIT_VALUE_MIN = 3
+HIT_VALUE_MAX = 10
+DRAGON_DEFENCE_MIN = 0
+DRAGON_DEFENCE_MAX = 5
+DRAGON_HIT_MIN = 10
+DRAGON_HIT_MAX = 15
+BLAST_DAMAGE_CHANCE_THRESHOLD = 50
+
+def load_config():
+    try:
+        with open('task12_rpg_config.json', 'r') as file:
+            config = json.load(file)
+        return config
+    except FileNotFoundError:
+        return {}
+
+def player_attack(dragon_health: int, sword_sharpness: int) -> int:
+    hit_value: int = randint(HIT_VALUE_MIN, HIT_VALUE_MAX) + sword_sharpness
+    dragon_defence: int = randint(DRAGON_DEFENCE_MIN, DRAGON_DEFENCE_MAX)
+    dragon_health -= hit_value - dragon_defence
+    print(f"You hit Dragon: {hit_value}, Dragon defenced: {dragon_defence}, dragon_health is: {dragon_health}!")
+    return dragon_health
+
+def dragon_attack(player_health: int, shield_durability: int, spell_blast_damage: int) -> int:
+    blast_damage_chance: int = randint(0, 100)
+    if blast_damage_chance > BLAST_DAMAGE_CHANCE_THRESHOLD:
+        dragons_hit: int = randint(DRAGON_HIT_MIN, DRAGON_HIT_MAX)
+        players_defence: int = randint(DRAGON_DEFENCE_MIN, DRAGON_DEFENCE_MAX) + shield_durability
+        player_health -= dragons_hit - players_defence
+        print(f"Dragon attacked: {dragons_hit}, Player defenced: {players_defence}, Player health is: {player_health}!")
+    else:
+        player_health -= spell_blast_damage
+        print(f"Dragon dealt magic damage: {spell_blast_damage}, Player health is: {player_health}!")
+    return player_health
+
+def drink_health_potion(player_health: int, num_of_health_potions: int) -> tuple[int, int]:
+    if num_of_health_potions > 0:
+        num_of_health_potions -= 1
+        player_health += HEALTH_POTION_RECOVERY
+        print(f"You restored 10 health points. Now your health is {player_health}, health potions left: {num_of_health_potions}")
+    else:
+        print("No health potions left!")
+    return player_health, num_of_health_potions
+
+def main() -> None:
+    config = load_config()
+
+    player_health: int = config.get('player_health', DEFAULT_PLAYER_HEALTH)
+    sword_sharpness: int = config.get('sword_sharpness', DEFAULT_SWORD_SHARPNESS)
+    shield_durability: int = config.get('shield_durability', DEFAULT_SHIELD_DURABILITY)
+    num_of_health_potions: int = config.get('num_of_health_potions', DEFAULT_NUM_OF_HEALTH_POTIONS)
+    dragon_health: int = config.get('dragon_health', DEFAULT_DRAGON_HEALTH)
+    spell_blast_damage: int = config.get('spell_blast_damage', DEFAULT_SPELL_BLAST_DAMAGE)
+
+    player_input: str = input("Do you want to attack the dragon? (yes/no): ")
+    if player_input == "yes":
+        while dragon_health > 0 and player_health > 0:
+            player_input: str = input("1. Hit the Dragon!, 2. Drink health potion! (or q to quit) ")
+            if player_input == "1":
+                dragon_health = player_attack(dragon_health, sword_sharpness)
+                if dragon_health > 0:
+                    player_health = dragon_attack(player_health, shield_durability, spell_blast_damage)
+                    if randint(0,100) < 50:
+                        sword_sharpness -= 2
+                        print(f"Your swrod got damage -2 durability! And now it's {sword_sharpness}")
+            elif player_input == "2":
+                player_health, num_of_health_potions = drink_health_potion(player_health, num_of_health_potions)
+
+            if player_health <= 0:
+                print("You have been defeated. The legends will sing of your bravery!")
+            elif dragon_health <= 0:
+                print("You have defeated the mighty dragon. You've saved the princess and become the King!")
+    elif player_input == "no":
+        print("You ran away cowardly... and decades later, only the scar on the cheek of a drunken old man in a tavern "
+              "reminded of the once mighty warrior.")
+
+if __name__ == "__main__":
+    main()

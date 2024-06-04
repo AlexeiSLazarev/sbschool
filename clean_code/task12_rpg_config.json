@@ -1,0 +1,8 @@
+{
+    "player_health": 50,
+    "sword_sharpness": 40,
+    "shield_durability": 10,
+    "num_of_health_potions": 5,
+    "dragon_health": 150,
+    "spell_blast_damage": 20
+}
