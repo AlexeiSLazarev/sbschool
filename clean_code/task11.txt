@@ -44,7 +44,9 @@ if player_input == "yes":
         if dragon_health <= 0:
             print("You have defeted the mighty dragon. You've saved the princess and become the King!")
         player_input = int(input("1. Hit again!, 2. Drink health potion! "))
-
+elif player_input == "no":
+    print("You ran away cowardly... and decades later, only the scar on the cheek of a drunken old man in a tavern "
+          "reminded of the once mighty warrior.")
 
 // Исправленный код с учетом рекомендаций из 11 урока:
 from random import randint
@@ -103,6 +105,9 @@ def main() -> None:
                 print("You have been defeated. The legends will sing of your bravery!")
             elif dragon_health <= 0:
                 print("You have defeated the mighty dragon. You've saved the princess and become the King!")
+elif player_input == "no":
+    print("You ran away cowardly... and decades later, only the scar on the cheek of a drunken old man in a tavern "
+          "reminded of the once mighty warrior.")
 
 if __name__ == "__main__":
     main()
