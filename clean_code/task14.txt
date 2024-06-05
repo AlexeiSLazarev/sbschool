@@ -1,0 +1,58 @@
+3.1
+# Регулярное выражение для валидации email адреса
+email_regex = re.compile(r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$')
+
+# Ограничение: discount не должен быть больше 100
+if discount > 100:
+    raise ValueError("Discount can't be more than 100%")
+return price - (price * (discount / 100))
+
+def delete_user(user_id):
+    # ВНИМАНИЕ: Эта функция удаляет пользователя без возможности восстановления
+    database.delete("users", user_id)
+
+def connect_to_database():
+    # Используем пул соединений для улучшения производительности
+    connection = create_connection_pool()
+    return connection
+
+def sort_large_dataset(dataset):
+    # ВНИМАНИЕ: Этот алгоритм сортировки O(n^2) и может быть медленным на больших наборах данных
+    sorted_dataset = sorted(dataset)
+    return sorted_dataset
+
+def configure_server():
+    # Установить таймаут соединения в 30 секунд для предотвращения долгого ожидания
+    server.set_timeout(30)
+
+def find_prime_numbers(limit):
+    # Используем алгоритм Эратосфена для нахождения всех простых чисел до заданного предела
+    primes = []
+    for num in range(2, limit + 1):
+        is_prime = True
+        for divisor in range(2, int(num ** 0.5) + 1):
+            if num % divisor == 0:
+                is_prime = False
+                break
+        if is_prime:
+            primes.append(num)
+    return primes
+
+
+3.2
+Излишние комментарии.
+queue = deque([(start[0], start[1], 0)]) # Инициализируем очередь вершин которые нужно пройти
+                                           с начальной позицией и расстоянием 0
+visited = [[False] * cols for _ in range(rows)] # Массив для отслеживания посещённых ячеек
+prev = [[None] * cols for _ in range(rows)]     # Массив для отслеживания предыдущих ячеек
+visited[start[0]][start[1]] = True              # Отмечаем начальную ячейку как посещённую
+...
+x, y, dist = queue.popleft()                    # Извлекаем текущую ячейку из очереди
+
+
+path_cells_queue = deque([(start[0], start[1], 0)])
+visited_cells = [[False] * map_width_cells for _ in range(map_height_cells)]
+previous_cell = [[None] * map_width_cells for _ in range(map_height_cells)]
+visited_cells[start[0]][start[1]] = True
+...
+current_row, current_column, distance_cells = path_cells_queue.popleft()
