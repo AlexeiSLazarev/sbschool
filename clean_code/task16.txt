@@ -1,0 +1,145 @@
+// 1. Тип 7. избыточный комментарий. Суть функции понятня из имени функции.
+// Изменены названия переменных.
+// Стало
+def read_lines_from_file(filename, start_line, num_lines):
+// Было
+def read_lines_from_file(filename, m, n):
+    """
+    Считывает n строк начиная с m-ой строки из файла.
+
+    Args:
+    - filename (str): Путь к файлу.
+    - m (int): Номер строки, с которой начинается чтение (отсчет с 0).
+    - n (int): Количество строк для чтения.
+
+    Returns:
+    - List[str]: Список прочитанных строк.
+    """
+
+    lines_to_return = []
+    with open(filename, 'r', encoding='utf-8') as file:
+        for current_line_num, line in enumerate(file):
+            if current_line_num < m:
+                continue
+            if current_line_num >= m + n:
+                break
+            lines_to_return.append(line.strip())
+    return lines_to_return
+
+def parse_job_description(html_text):
+    soup = BeautifulSoup(html_text, 'html.parser')
+
+// 2. Тип 4 - шум. Утверждает очевидное. Удаляем.
+    # Initialize dictionary to store structured data
+    job_info = {}
+
+// 3.  Тип 7 - избыточная информация. Удаляем
+    # Extract company information
+    company_info = soup.find('strong').text
+    job_info['company'] = company_info.split('-')[0].strip()
+
+
+
+def get_python_vacancies(page=0):
+    url = 'https://api.hh.ru/vacancies'
+    params = {
+        'text': 'Python',
+// 4.  Тип 7 - избыточная информация. Удаляем
+        'area': 1,  # Specify the area code, e.g., 1 for Moscow
+        'per_page': 100,  # Number of vacancies per page
+        'only_with_salary': True,  # Only include vacancies with salary information
+        'salary': '100000',  # Minimum salary level (in RUB)
+        'currency': 'RUR',  # Currency for salary
+        'remote_work': True,  # Include remote jobs
+        'page': page  # Page number
+    }
+
+// 5.  Тип 1 - неочевидный комментарий. Дополняем.
+def is_emoji(s):
+    """
+    Проверяет, является ли символ эмодзи.
+    Символы эмодзи относятся к следующим категориям Unicode:
+    - So (Symbol, Other)
+    - Sk (Symbol, Modifier)
+    - Sc (Symbol, Currency)
+    - Sm (Symbol, Math)
+    """
+    return unicodedata.category(s) in ('So', 'Sk', 'Sc', 'Sm')
+
+
+
+// 6. Тип 2 - бормотание. Необходимо либо удалить либо подробнее расписать что и зачем.
+number_elements_for_train = 750 # Тут надо будет написать 17млн
+
+
+// 7. Тип 4 - шум. удаляем, переименовываем переменные.
+# Зададим Параметры алгорима понижения размерности UMAP
+n_com=15 # До какой размерности нужно уменьшить
+n_neig=15 # Число ближайших соседей
+min_d=0.0
+random_st=12
+umap_model = cuml.manifold.UMAP(n_components=n_com, n_neighbors=n_neig, min_dist=min_d, random_state=random_st)
+
+// 8. Тип 4 - шум. удаляем
+# Объединим массивы
+reduced_data = []
+for i in range(len(embeddings)):
+    if i in idxs_train_data:
+        reduced_data.append(reduced_train_data[idxs_train_data.index(i)])
+    else:
+        reduced_data.append(reduced_test_data[idxs_test_data.index(i)])
+reduced_data = np.array(reduced_data)
+
+
+//9.  Тип 4 - шум. удаляем
+# Сохранение массива эмбеддингов меньшей размерности [num_all_elements, 15]
+# np.save('reduced_data.npy', reduced_data)
+
+
+// 10. Самый первый комментарий - Тип 4 - шум. удаляем
+# Параметры кластеризатора
+hdbscan_min_samples=25 # Количество выборок в окрестности точки, которая будет считаться базовой точкой.
+                       # Это включает в себя саму точку. Если «Нет», по умолчанию используется min_cluster_size.
+hdbscan_min_cluster_size=5
+hdbscan_max_cluster_size=1000
+
+
+// 11. Тип 3 - ложь. Удалить.
+# [проверить корректность цикла]
+for i in range(min_string_len, min(len(search_string), len(str_dict)), step):
+    startstr = search_string[:i]
+    if not str_dict.startswith(startstr):
+        return result
+    result = i
+return result
+
+
+// 12. Тип 2 - бормотание. Детализировать или удалить.
+# Пытаемся предварительно провести прямой поиск
+result = self.find(search_string)
+if result is not None:
+    return result
+
+// 13. Тип 2 - бормотание, Тип 9 - нелокальная (слишком общая информация).
+// удаляем или детализируем.
+# Ищем по аналогии (нечеткий поиск на ближайшее соответствие)
+position_index = bisect_left(self.keys, (search_string,))
+
+
+// 14. Тип 4. Из кода очевидно что делается.
+// Можно чуть изменить названия переменных, тогнда станет совсем очевидно.
+# Отрисовываем путь
+for px, py in path:
+    grid[px][py] = '*'
+return distance_cells, grid
+
+// 15. Тип 7 - комментарий избыточен.
+// Удаляем.
+# Пример использования
+grid = [
+    [0, 1, 0, 0, 0],
+    [0, 1, 0, 1, 0],
+    [0, 0, 0, 1, 0],
+    [1, 1, 0, 0, 0],
+    [0, 0, 0, 1, 0]
+]
