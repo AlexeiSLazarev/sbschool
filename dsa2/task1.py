@@ -105,3 +105,5 @@ def generate_balanced_parenthesis(num_pairs: int, combinations: List[str] = [], 
     if close_count < open_count:
         generate_balanced_parenthesis(num_pairs, combinations, current_string + ')', open_count, close_count + 1)
     return combinations
+
+
