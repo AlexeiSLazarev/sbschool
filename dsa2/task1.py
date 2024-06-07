@@ -23,9 +23,9 @@ def sum_of_digits(number: int) -> int:
 # 3. расчёт длины списка, для которого разрешена только операция удаления первого элемента pop(0)
 # (и получение длины конечно);
 def get_length_of_list(list_to_measure: List[Any]) -> int:
-    if not list_to_measure:
-        return 0
-    return 1 + get_length_of_list(list_to_measure[1:])
+    if list_to_measure:
+        return 1 + get_length_of_list(list_to_measure[1:])
+    return 0
 
 
 # 4. проверка, является ли строка палиндромом;
@@ -52,7 +52,7 @@ def print_even_values(values: List[int]) -> None:
 
 
 # 6. печать элементов списка с чётными индексами;
-def print_even_index_values(values: List[Any], element_id: id = 1):
+def print_even_index_values(values: List[Any], element_id: id = 1) -> None:
     if element_id >= len(values):
         return
     print(values[element_id])
@@ -61,7 +61,7 @@ def print_even_index_values(values: List[Any], element_id: id = 1):
 
 # 7. нахождение второго максимального числа в списке (с учётом, что максимальных может быть несколько, если они равны)
 def find_second_max_value(values: List[Any], element_id: id = 0, first_max_value: int = None,
-                          second_max_value: int = None):
+                          second_max_value: int = None) -> int:
     if element_id >= len(values):
         return second_max_value
 
@@ -80,7 +80,7 @@ def find_second_max_value(values: List[Any], element_id: id = 0, first_max_value
 
 
 # 8. поиск всех файлов в заданном каталоге, включая файлы, расположенные в подкаталогах произвольной вложенности.
-def list_dir_recursively(folder_items: List[Any], current_path: str):
+def list_dir_recursively(folder_items: List[Any], current_path: str) -> List[Any]:
     if not folder_items:
         return []
     item = current_path + os.sep + folder_items.pop()
@@ -89,5 +89,5 @@ def list_dir_recursively(folder_items: List[Any], current_path: str):
     return [item] + list_dir_recursively(folder_items, current_path)
 
 
-def list_dir(dir_path: str):
+def list_dir(dir_path: str) -> List[Any]:
     return list_dir_recursively(os.listdir(dir_path), dir_path)
