@@ -269,5 +269,30 @@ class TestListDir(unittest.TestCase):
         self.assertEqual(result, [file_path])
 
 
+class TestGenerateBalancedParenthesis(unittest.TestCase):
+
+    def test_one_pair(self):
+        self.assertListEqual(generate_balanced_parenthesis(1), ["()"])
+
+    def test_two_pairs(self):
+        self.assertEqual(set(generate_balanced_parenthesis(2)), {"(())", "()()"})
+
+    def test_three_pairs(self):
+        expected_output = {"((()))", "(()())", "(())()", "()(())", "()()()"}
+        self.assertEqual(set(generate_balanced_parenthesis(3)), expected_output)
+
+    def test_four_pairs(self):
+        expected_output = {
+            "(((())))", "((()()))", "((())())", "((()))()", "(()(()))", "(()()())", "(()())()",
+            "(())(())", "(())()()", "()((()))", "()(()())", "()(())()", "()()(())", "()()()()"
+        }
+        res = set(generate_balanced_parenthesis(4))
+        self.assertEqual(res, expected_output)
+
+    def test_no_duplicates(self):
+        result = generate_balanced_parenthesis(3)
+        self.assertEqual(len(result), len(set(result)))
+
+
 if __name__ == '__main__':
     unittest.main()

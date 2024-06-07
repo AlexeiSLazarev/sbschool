@@ -1,5 +1,5 @@
 import os
-from typing import List, Any
+from typing import List, Any, Set
 
 
 # 1. возведение числа N в степень M;
@@ -91,3 +91,39 @@ def list_dir_recursively(folder_items: List[Any], current_path: str) -> List[Any
 
 def list_dir(dir_path: str) -> List[Any]:
     return list_dir_recursively(os.listdir(dir_path), dir_path)
+
+
+#
+# Генерация всех корректных сбалансированных комбинаций круглых скобок (параметр -- количество открывающих скобок).
+def generate_balanced_parenthesis(num_pairs: int, combinations: List[str] = [], current_string: str = '',
+                                  open_count: int = 0, close_count: int = 0) -> List[str]:
+    if len(current_string) == 2 * num_pairs:
+        combinations.append(current_string)
+        return combinations
+    if open_count < num_pairs:
+        generate_balanced_parenthesis(num_pairs, combinations, current_string + '(', open_count + 1, close_count)
+    if close_count < open_count:
+        generate_balanced_parenthesis(num_pairs, combinations, current_string + ')', open_count, close_count + 1)
+    return combinations
+
+
+# Первая ошибочная версия
+# Генерация всех корректных сбалансированных комбинаций круглых скобок (параметр -- количество открывающих скобок).
+def recursive_embrace(base_item_list: List[Any], new_item_list=[]) -> Set[Any]:
+    if base_item_list:
+        base_item = base_item_list.pop()
+        new_item_list.append("(" + base_item + ")")
+        new_item_list.append(base_item + "(" + ")")
+        new_item_list.append("(" + ")" + base_item)
+        return recursive_embrace(base_item_list, new_item_list)
+    return set(new_item_list)
+
+
+def generate_balanced_parenthesis2(num_open_braces: int, combinations_list=["()"], current_num_braces: int = 1):
+    if current_num_braces >= num_open_braces:
+        return combinations_list
+    combinations_list = recursive_embrace(combinations_list)
+    return [combination for combination in generate_balanced_parenthesis2(num_open_braces,
+                                                                         list(combinations_list),
+                                                                         current_num_braces + 1)
+            if len(combination) == num_open_braces * 2]
