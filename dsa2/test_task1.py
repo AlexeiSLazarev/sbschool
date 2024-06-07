@@ -1,13 +1,12 @@
+import os
+import shutil
+import tempfile
 import unittest
-from task1 import power_of_number, \
-    sum_of_digits, \
-    get_length_of_list, \
-    is_string_palindrome, \
-    print_even_values, \
-    print_even_index_values
+from task1 import *
 
 from unittest.mock import patch
 import io
+
 
 class TestMultiplyNumber(unittest.TestCase):
 
@@ -70,6 +69,7 @@ class TestGetLengthOfList(unittest.TestCase):
         original_list = [1, 2, 3]
         get_length_of_list(original_list)
         self.assertEqual(original_list, [1, 2, 3])
+
 
 # Test suite for the function
 class TestIsStringPalindrome(unittest.TestCase):
@@ -170,6 +170,7 @@ class TestPrintEvenValues(unittest.TestCase):
     def test_mixed_even_odd_elements(self):
         with patch('sys.stdout', new=io.StringIO()) as fake_out:
             print_even_values([1, 2, 3, 4, 5, 6])
+            val = fake_out.getvalue()
             self.assertEqual(fake_out.getvalue(), "2\n4\n6\n")
 
     def test_negative_even_elements(self):
@@ -186,6 +187,87 @@ class TestPrintEvenValues(unittest.TestCase):
         with patch('sys.stdout', new=io.StringIO()) as fake_out:
             print_even_values([2, -3, 4, -5, 6, -7])
             self.assertEqual(fake_out.getvalue(), "2\n4\n6\n")
+
+
+class TestFindSecondMaxValue(unittest.TestCase):
+
+    def test_empty_list(self):
+        self.assertIsNone(find_second_max_value([]))
+
+    def test_single_element_list(self):
+        self.assertIsNone(find_second_max_value([1]))
+
+    def test_all_negative_elements(self):
+        self.assertEqual(find_second_max_value([-1, -2, -3, -4]), -2)
+
+    def test_positive_elements(self):
+        self.assertEqual(find_second_max_value([1, 2, 3, 4]), 3)
+
+    def test_mixed_elements(self):
+        self.assertEqual(find_second_max_value([5, 5, 4, 4, 3]), 5)
+
+    def test_duplicate_max_values(self):
+        self.assertEqual(find_second_max_value([5, 5, 4, 4, 3, 3]), 5)
+
+    def test_duplicate_max_values_in_end(self):
+        self.assertEqual(find_second_max_value([1, 2, 3, 4, 5, 5]), 5)
+
+    def test_all_same_values(self):
+        self.assertEqual(find_second_max_value([1, 1, 1, 1, 1, 1]), 1)
+
+
+class TestListDir(unittest.TestCase):
+
+    def setUp(self):
+        # Create a temporary directory
+        self.test_dir = tempfile.mkdtemp()
+
+        # Create a structure of directories and files
+        os.makedirs(os.path.join(self.test_dir, 'dir1'))
+        os.makedirs(os.path.join(self.test_dir, 'dir2'))
+        os.makedirs(os.path.join(self.test_dir, 'dir1', 'subdir1'))
+
+        with open(os.path.join(self.test_dir, 'file1.txt'), 'w') as f:
+            f.write('File 1 content')
+
+        with open(os.path.join(self.test_dir, 'dir1', 'file2.txt'), 'w') as f:
+            f.write('File 2 content')
+
+        with open(os.path.join(self.test_dir, 'dir1', 'subdir1', 'file3.txt'), 'w') as f:
+            f.write('File 3 content')
+
+        with open(os.path.join(self.test_dir, 'dir2', 'file4.txt'), 'w') as f:
+            f.write('File 4 content')
+
+    def tearDown(self):
+        # Remove the directory after the test
+        shutil.rmtree(self.test_dir)
+
+    def test_list_dir(self):
+        expected_files = [
+            os.path.join(self.test_dir, 'file1.txt'),
+            os.path.join(self.test_dir, 'dir1', 'file2.txt'),
+            os.path.join(self.test_dir, 'dir1', 'subdir1', 'file3.txt'),
+            os.path.join(self.test_dir, 'dir2', 'file4.txt'),
+        ]
+        result = list_dir(self.test_dir)
+        self.assertCountEqual(result, expected_files)
+
+    def test_list_dir_empty(self):
+        empty_dir = os.path.join(self.test_dir, 'empty_dir')
+        os.makedirs(empty_dir)
+        result = list_dir(empty_dir)
+        self.assertEqual(result, [])
+
+    def test_list_dir_single_file(self):
+        single_file_dir = os.path.join(self.test_dir, 'single_file_dir')
+        os.makedirs(single_file_dir)
+        file_path = os.path.join(single_file_dir, 'file.txt')
+        with open(file_path, 'w') as f:
+            f.write('Single file content')
+        result = list_dir(single_file_dir)
+        self.assertEqual(result, [file_path])
+
 
 if __name__ == '__main__':
     unittest.main()
