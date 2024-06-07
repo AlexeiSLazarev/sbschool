@@ -93,7 +93,6 @@ def list_dir(dir_path: str) -> List[Any]:
     return list_dir_recursively(os.listdir(dir_path), dir_path)
 
 
-#
 # Генерация всех корректных сбалансированных комбинаций круглых скобок (параметр -- количество открывающих скобок).
 def generate_balanced_parenthesis(num_pairs: int, combinations: List[str] = [], current_string: str = '',
                                   open_count: int = 0, close_count: int = 0) -> List[str]:
@@ -105,5 +104,3 @@ def generate_balanced_parenthesis(num_pairs: int, combinations: List[str] = [], 
     if close_count < open_count:
         generate_balanced_parenthesis(num_pairs, combinations, current_string + ')', open_count, close_count + 1)
     return combinations
-
-
