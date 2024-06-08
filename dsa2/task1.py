@@ -52,7 +52,9 @@ def print_even_values(values: List[int]) -> None:
 
 
 # 6. печать элементов списка с чётными индексами;
-def print_even_index_values(values: List[Any], element_id: id = 1) -> None:
+def print_even_index_values(values: List[Any], element_id: id = None) -> None:
+    if element_id is None:
+        element_id = 1
     if element_id >= len(values):
         return
     print(values[element_id])
@@ -97,10 +99,16 @@ def list_dir(dir_path: str) -> List[Any]:
 
 
 # Генерация всех корректных сбалансированных комбинаций круглых скобок (параметр -- количество открывающих скобок).
-def generate_balanced_parenthesis(num_pairs: int, combinations: List[str] = None, current_string: str = '',
-                                  open_count: int = 0, close_count: int = 0) -> List[str]:
+def generate_balanced_parenthesis(num_pairs: int, combinations: List[str] = None, current_string: str = None,
+                                  open_count: int = None, close_count: int = None) -> List[str]:
     if combinations is None:
         combinations = []
+    if current_string is None:
+        current_string = ''
+    if open_count is None:
+        open_count = 0
+    if close_count is None:
+        close_count = 0
     if len(current_string) == 2 * num_pairs:
         combinations.append(current_string)
         return combinations
