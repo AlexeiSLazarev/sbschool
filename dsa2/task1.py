@@ -32,13 +32,13 @@ def get_length_of_list(list_to_measure: List[Any]) -> int:
 def is_palindrome_recursive(suspected_str: str, first_index: int, last_index: int) -> bool:
     if first_index >= last_index:
         return True
-    if suspected_str[0] == suspected_str[-1]:
-        return is_palindrome_recursive(suspected_str, first_index + 1, last_index - 1)
-    return False
+    if suspected_str[first_index] != suspected_str[last_index]:
+        return False
+    return is_palindrome_recursive(suspected_str, first_index + 1, last_index - 1)
 
 
 def is_string_palindrome(suspected_str: str) -> bool:
-    return is_palindrome_recursive(suspected_str, 0, len(suspected_str))
+    return is_palindrome_recursive(suspected_str, 0, len(suspected_str) - 1)
 
 
 # 5. печать только чётных значений из списка;
@@ -60,11 +60,12 @@ def print_even_index_values(values: List[Any], element_id: id = 1) -> None:
 
 
 # 7. нахождение второго максимального числа в списке (с учётом, что максимальных может быть несколько, если они равны)
-def find_second_max_value(values: List[Any], element_id: id = 0, first_max_value: int = None,
+def find_second_max_value(values: List[Any], element_id: id = None, first_max_value: int = None,
                           second_max_value: int = None) -> int:
+    if element_id is None:
+        element_id = 0
     if element_id >= len(values):
         return second_max_value
-
     if first_max_value is None:
         return find_second_max_value(values, element_id + 1, values[element_id], second_max_value)
     if second_max_value is None:
@@ -80,22 +81,26 @@ def find_second_max_value(values: List[Any], element_id: id = 0, first_max_value
 
 
 # 8. поиск всех файлов в заданном каталоге, включая файлы, расположенные в подкаталогах произвольной вложенности.
-def list_dir_recursively(folder_items: List[Any], current_path: str) -> List[Any]:
-    if not folder_items:
+def list_dir_recursively(folder_items: List[Any], current_path: str, current_item_id: int) -> List[Any]:
+    if current_item_id >= len(folder_items):
         return []
-    item = current_path + os.sep + folder_items.pop()
+    item = current_path + os.sep + folder_items[current_item_id]
     if os.path.isdir(item):
-        return list_dir_recursively(folder_items, current_path) + list_dir_recursively(os.listdir(item), item)
-    return [item] + list_dir_recursively(folder_items, current_path)
+        return (list_dir_recursively(os.listdir(item), item, 0) +
+                list_dir_recursively(folder_items, current_path, current_item_id + 1))
+    return [item] + list_dir_recursively(folder_items, current_path, current_item_id + 1)
 
 
 def list_dir(dir_path: str) -> List[Any]:
-    return list_dir_recursively(os.listdir(dir_path), dir_path)
+    final_list = list_dir_recursively(os.listdir(dir_path), dir_path, 0)
+    return final_list
 
 
 # Генерация всех корректных сбалансированных комбинаций круглых скобок (параметр -- количество открывающих скобок).
-def generate_balanced_parenthesis(num_pairs: int, combinations: List[str] = [], current_string: str = '',
+def generate_balanced_parenthesis(num_pairs: int, combinations: List[str] = None, current_string: str = '',
                                   open_count: int = 0, close_count: int = 0) -> List[str]:
+    if combinations is None:
+        combinations = []
     if len(current_string) == 2 * num_pairs:
         combinations.append(current_string)
         return combinations
