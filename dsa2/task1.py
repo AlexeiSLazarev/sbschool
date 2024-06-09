@@ -52,11 +52,15 @@ def print_even_values(values: List[int]) -> None:
 
 
 # 6. печать элементов списка с чётными индексами;
-def print_even_index_values(values: List[Any], element_id: int) -> None:
+def print_even_index_values_recursively(values: List[Any], element_id: int) -> None:
     if element_id >= len(values):
         return
     print(values[element_id])
-    print_even_index_values(values, element_id + 2)
+    print_even_index_values_recursively(values, element_id + 2)
+
+
+def print_even_index_values(values: List[Any]):
+    print_even_index_values_recursively(values, 0)
 
 
 # 7. нахождение второго максимального числа в списке (с учётом, что максимальных может быть несколько, если они равны)
@@ -99,9 +103,11 @@ def generate_balanced_parenthesis_recursively(num_pairs: int, combinations: List
         combinations.append(current_string)
         return
     if open_count < num_pairs:
-        generate_balanced_parenthesis_recursively(num_pairs, combinations, current_string + '(', open_count + 1, close_count)
+        generate_balanced_parenthesis_recursively(num_pairs, combinations, current_string + '(', open_count + 1,
+                                                  close_count)
     if close_count < open_count:
-        generate_balanced_parenthesis_recursively(num_pairs, combinations, current_string + ')', open_count, close_count + 1)
+        generate_balanced_parenthesis_recursively(num_pairs, combinations, current_string + ')', open_count,
+                                                  close_count + 1)
 
 
 def generate_balanced_parenthesis(num_pairs: int) -> List[str]:

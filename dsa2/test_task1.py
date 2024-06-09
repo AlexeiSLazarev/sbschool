@@ -106,28 +106,24 @@ class TestPrintEvenIndexValues(unittest.TestCase):
 
     def test_empty_list(self):
         values = []
-        print_even_index_values(values, 1)
+        print_even_index_values(values)
         self.assertEqual(self.held_output.getvalue(), "")
 
     def test_single_element(self):
         values = [10]
-        print_even_index_values(values, 1)
+        print_even_index_values(values)
         self.assertEqual(self.held_output.getvalue(), "")
 
     def test_two_elements(self):
         values = [10, 20]
-        print_even_index_values(values, 1)
+        print_even_index_values(values)
         self.assertEqual(self.held_output.getvalue(), "20\n")
 
     def test_multiple_elements(self):
         values = [10, 20, 30, 40, 50, 60]
-        print_even_index_values(values, 1)
-        self.assertEqual(self.held_output.getvalue(), "20\n40\n60\n")
-
-    def test_starting_at_index_0(self):
-        values = [10, 20, 30, 40, 50, 60]
-        print_even_index_values(values, 0)
+        print_even_index_values(values)
         self.assertEqual(self.held_output.getvalue(), "10\n30\n50\n")
+
 
 
 class TestPrintEvenValues(unittest.TestCase):
