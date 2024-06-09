@@ -42,13 +42,17 @@ def is_string_palindrome(suspected_str: str) -> bool:
 
 
 # 5. печать только чётных значений из списка;
-def print_even_values(values: List[int]) -> None:
-    if not values:
+def print_even_values_recursively(values: List[int], item_index: int, list_length: int) -> None:
+    if item_index >= list_length:
         return
-    value = values.pop(0)
+    value = values[item_index]
     if value % 2 == 0:
         print(value)
-    print_even_values(values)
+    print_even_values_recursively(values, item_index + 1, list_length)
+
+
+def print_even_values(values: List[int]) -> None:
+    print_even_values_recursively(values, 0, len(values))
 
 
 # 6. печать элементов списка с чётными индексами;

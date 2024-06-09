@@ -112,12 +112,12 @@ class TestPrintEvenIndexValues(unittest.TestCase):
     def test_single_element(self):
         values = [10]
         print_even_index_values(values)
-        self.assertEqual(self.held_output.getvalue(), "")
+        self.assertEqual(self.held_output.getvalue(), "10\n")
 
     def test_two_elements(self):
         values = [10, 20]
         print_even_index_values(values)
-        self.assertEqual(self.held_output.getvalue(), "20\n")
+        self.assertEqual(self.held_output.getvalue(), "10\n")
 
     def test_multiple_elements(self):
         values = [10, 20, 30, 40, 50, 60]
