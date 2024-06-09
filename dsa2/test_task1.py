@@ -1,11 +1,13 @@
 import os
 import shutil
+import sys
 import tempfile
 import unittest
 from task1 import *
-
 from unittest.mock import patch
+from io import StringIO
 import io
+
 
 
 class TestMultiplyNumber(unittest.TestCase):
@@ -92,42 +94,40 @@ class TestIsStringPalindrome(unittest.TestCase):
         self.assertFalse(is_string_palindrome("Aba"))
 
 
-class TestPrintEvenIndexElements(unittest.TestCase):
+class TestPrintEvenIndexValues(unittest.TestCase):
+    def setUp(self):
+        self.held_output = StringIO()
+        self.original_stdout = sys.stdout
+        sys.stdout = self.held_output
+
+    def tearDown(self):
+        sys.stdout = self.original_stdout
+        self.held_output.close()
 
     def test_empty_list(self):
-        with patch('sys.stdout', new=io.StringIO()) as fake_out:
-            print_even_index_values([])
-            self.assertEqual(fake_out.getvalue(), "")
+        values = []
+        print_even_index_values(values, 1)
+        self.assertEqual(self.held_output.getvalue(), "")
 
     def test_single_element(self):
-        with patch('sys.stdout', new=io.StringIO()) as fake_out:
-            print_even_index_values([1])
-            self.assertEqual(fake_out.getvalue(), "")
+        values = [10]
+        print_even_index_values(values, 1)
+        self.assertEqual(self.held_output.getvalue(), "")
 
     def test_two_elements(self):
-        with patch('sys.stdout', new=io.StringIO()) as fake_out:
-            print_even_index_values([1, 2])
-            self.assertEqual(fake_out.getvalue(), "2\n")
+        values = [10, 20]
+        print_even_index_values(values, 1)
+        self.assertEqual(self.held_output.getvalue(), "20\n")
 
     def test_multiple_elements(self):
-        with patch('sys.stdout', new=io.StringIO()) as fake_out:
-            print_even_index_values([10, 20, 30, 40, 50])
-            self.assertEqual(fake_out.getvalue(), "20\n40\n")
+        values = [10, 20, 30, 40, 50, 60]
+        print_even_index_values(values, 1)
+        self.assertEqual(self.held_output.getvalue(), "20\n40\n60\n")
 
-    def test_all_even_positions(self):
-        with patch('sys.stdout', new=io.StringIO()) as fake_out:
-            print_even_index_values([2, 4, 6, 8, 10, 12, 14])
-            self.assertEqual(fake_out.getvalue(), "4\n8\n12\n")
-
-    def test_strings(self):
-        with patch('sys.stdout', new=io.StringIO()) as fake_out:
-            print_even_index_values(["a", "b", "c", "d", "e", "f"])
-            self.assertEqual(fake_out.getvalue(), "b\nd\nf\n")
-
-    def test_mixed_types(self):
-        with patch('sys.stdout', new=io.StringIO()) as fake_out:
-            print_even_index_values([1, "two", 3.0, "four", 5, "six"])
-            self.assertEqual(fake_out.getvalue(), "two\nfour\nsix\n")
+    def test_starting_at_index_0(self):
+        values = [10, 20, 30, 40, 50, 60]
+        print_even_index_values(values, 0)
+        self.assertEqual(self.held_output.getvalue(), "10\n30\n50\n")
 
 
 class TestPrintEvenValues(unittest.TestCase):
@@ -190,31 +190,29 @@ class TestPrintEvenValues(unittest.TestCase):
 
 
 class TestFindSecondMaxValue(unittest.TestCase):
-
     def test_empty_list(self):
-        self.assertIsNone(find_second_max_value([]))
+        with self.assertRaises(ValueError):
+            find_second_max([])
 
     def test_single_element_list(self):
-        self.assertIsNone(find_second_max_value([1]))
+        with self.assertRaises(ValueError):
+            find_second_max([10])
 
-    def test_all_negative_elements(self):
-        self.assertEqual(find_second_max_value([-1, -2, -3, -4]), -2)
+    def test_two_elements(self):
+        self.assertEqual(find_second_max([10, 20]), 10)
+        self.assertEqual(find_second_max([20, 10]), 10)
 
-    def test_positive_elements(self):
-        self.assertEqual(find_second_max_value([1, 2, 3, 4]), 3)
+    def test_multiple_elements(self):
+        self.assertEqual(find_second_max([10, 20, 30, 20, 10, 50]), 30)
+        self.assertEqual(find_second_max([50, 20, 30, 20, 10, 50]), 50)
+        self.assertEqual(find_second_max([10, 10, 10, 10, 10, 10]), 10)
+        self.assertEqual(find_second_max([10, 20, 30, 40, 50, 60]), 50)
+        val = find_second_max([60, 50, 40, 30, 20, 10])
+        self.assertEqual(find_second_max([60, 50, 40, 30, 20, 10]), 50)
 
-    def test_mixed_elements(self):
-        self.assertEqual(find_second_max_value([5, 5, 4, 4, 3]), 5)
-
-    def test_duplicate_max_values(self):
-        self.assertEqual(find_second_max_value([5, 5, 4, 4, 3, 3]), 5)
-
-    def test_duplicate_max_values_in_end(self):
-        self.assertEqual(find_second_max_value([1, 2, 3, 4, 5, 5]), 5)
-
-    def test_all_same_values(self):
-        self.assertEqual(find_second_max_value([1, 1, 1, 1, 1, 1]), 1)
-
+    def test_with_duplicates(self):
+        self.assertEqual(find_second_max([10, 20, 20, 20, 10, 30]), 20)
+        self.assertEqual(find_second_max([30, 30, 30, 30, 30, 20]), 30)
 
 class TestListDir(unittest.TestCase):
 

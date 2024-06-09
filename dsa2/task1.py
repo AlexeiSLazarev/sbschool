@@ -52,9 +52,7 @@ def print_even_values(values: List[int]) -> None:
 
 
 # 6. печать элементов списка с чётными индексами;
-def print_even_index_values(values: List[Any], element_id: id = None) -> None:
-    if element_id is None:
-        element_id = 1
+def print_even_index_values(values: List[Any], element_id: int) -> None:
     if element_id >= len(values):
         return
     print(values[element_id])
@@ -62,24 +60,20 @@ def print_even_index_values(values: List[Any], element_id: id = None) -> None:
 
 
 # 7. нахождение второго максимального числа в списке (с учётом, что максимальных может быть несколько, если они равны)
-def find_second_max_value(values: List[Any], element_id: id = None, first_max_value: int = None,
-                          second_max_value: int = None) -> int:
-    if element_id is None:
-        element_id = 0
+def find_second_max_value(values: List[Any], element_id: int, first_max_value: int, second_max_value: int) -> int:
     if element_id >= len(values):
         return second_max_value
-    if first_max_value is None:
-        return find_second_max_value(values, element_id + 1, values[element_id], second_max_value)
-    if second_max_value is None:
-        if values[element_id] > first_max_value:
-            return find_second_max_value(values, element_id + 1, values[element_id], first_max_value)
-        return find_second_max_value(values, element_id + 1, first_max_value, values[element_id])
-
-    if values[element_id] >= first_max_value:
+    if values[element_id] > first_max_value:
         return find_second_max_value(values, element_id + 1, values[element_id], first_max_value)
-    if values[element_id] >= second_max_value:
+    if second_max_value is None or values[element_id] > second_max_value:
         return find_second_max_value(values, element_id + 1, first_max_value, values[element_id])
     return find_second_max_value(values, element_id + 1, first_max_value, second_max_value)
+
+
+def find_second_max(values: List[Any]) -> int:
+    if not values or len(values) < 2:
+        raise ValueError("List must contain at least two elements.")
+    return find_second_max_value(values, 1, values[0], None)
 
 
 # 8. поиск всех файлов в заданном каталоге, включая файлы, расположенные в подкаталогах произвольной вложенности.
@@ -99,21 +93,18 @@ def list_dir(dir_path: str) -> List[Any]:
 
 
 # Генерация всех корректных сбалансированных комбинаций круглых скобок (параметр -- количество открывающих скобок).
-def generate_balanced_parenthesis(num_pairs: int, combinations: List[str] = None, current_string: str = None,
-                                  open_count: int = None, close_count: int = None) -> List[str]:
-    if combinations is None:
-        combinations = []
-    if current_string is None:
-        current_string = ''
-    if open_count is None:
-        open_count = 0
-    if close_count is None:
-        close_count = 0
+def generate_balanced_parenthesis_recursively(num_pairs: int, combinations: List[str], current_string: str,
+                                              open_count: int, close_count: int) -> None:
     if len(current_string) == 2 * num_pairs:
         combinations.append(current_string)
-        return combinations
+        return
     if open_count < num_pairs:
-        generate_balanced_parenthesis(num_pairs, combinations, current_string + '(', open_count + 1, close_count)
+        generate_balanced_parenthesis_recursively(num_pairs, combinations, current_string + '(', open_count + 1, close_count)
     if close_count < open_count:
-        generate_balanced_parenthesis(num_pairs, combinations, current_string + ')', open_count, close_count + 1)
+        generate_balanced_parenthesis_recursively(num_pairs, combinations, current_string + ')', open_count, close_count + 1)
+
+
+def generate_balanced_parenthesis(num_pairs: int) -> List[str]:
+    combinations = []
+    generate_balanced_parenthesis_recursively(num_pairs, combinations, '', 0, 0)
     return combinations
