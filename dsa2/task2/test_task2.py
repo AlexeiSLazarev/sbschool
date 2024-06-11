@@ -90,6 +90,85 @@ class TestSimpleTree(unittest.TestCase):
         tree.AddChild(child1, new_child)
         self.assertEqual(tree.LeafCount(), 3)
 
+class TestSimpleTree2(unittest.TestCase):
+
+    def setUp(self) -> None:
+        self.root = SimpleTreeNode(0)
+        self.tree = SimpleTree(self.root)
+
+    def test_add_child(self) -> None:
+        child = SimpleTreeNode(1)
+        self.tree.AddChild(self.root, child)
+        self.assertIn(child, self.root.children)
+        self.assertEqual(child.parent, self.root)
+
+    def test_delete_node(self) -> None:
+        child = SimpleTreeNode(1)
+        self.tree.AddChild(self.root, child)
+        self.tree.DeleteNode(child)
+        self.assertNotIn(child, self.root.children)
+        self.assertIsNone(child.parent)
+
+    def test_get_all_nodes(self) -> None:
+        child1 = SimpleTreeNode(1)
+        child2 = SimpleTreeNode(2)
+        self.tree.AddChild(self.root, child1)
+        self.tree.AddChild(self.root, child2)
+        all_nodes = self.tree.GetAllNodes()
+        self.assertEqual(len(all_nodes), 3)
+        self.assertIn(self.root, all_nodes)
+        self.assertIn(child1, all_nodes)
+        self.assertIn(child2, all_nodes)
+
+    def test_find_nodes_by_value(self) -> None:
+        child1 = SimpleTreeNode(1)
+        child2 = SimpleTreeNode(2)
+        child3 = SimpleTreeNode(1)
+        self.tree.AddChild(self.root, child1)
+        self.tree.AddChild(self.root, child2)
+        self.tree.AddChild(self.root, child3)
+        nodes_with_value_1 = self.tree.FindNodesByValue(1)
+        self.assertEqual(len(nodes_with_value_1), 2)
+        self.assertIn(child1, nodes_with_value_1)
+        self.assertIn(child3, nodes_with_value_1)
+
+    def test_move_node(self) -> None:
+        child1 = SimpleTreeNode(1)
+        child2 = SimpleTreeNode(2)
+        self.tree.AddChild(self.root, child1)
+        self.tree.AddChild(self.root, child2)
+        self.tree.MoveNode(child1, child2)
+        self.assertNotIn(child1, self.root.children)
+        self.assertIn(child1, child2.children)
+        self.assertEqual(child1.parent, child2)
+
+    def test_count(self) -> None:
+        child1 = SimpleTreeNode(1)
+        child2 = SimpleTreeNode(2)
+        self.tree.AddChild(self.root, child1)
+        self.tree.AddChild(self.root, child2)
+        self.assertEqual(self.tree.Count(), 3)
+
+    def test_leaf_count(self) -> None:
+        child1 = SimpleTreeNode(1)
+        child2 = SimpleTreeNode(2)
+        self.tree.AddChild(self.root, child1)
+        self.tree.AddChild(self.root, child2)
+        self.assertEqual(self.tree.LeafCount(), 2)
+        child3 = SimpleTreeNode(3)
+        self.tree.AddChild(child1, child3)
+        self.assertEqual(self.tree.LeafCount(), 2)
+
+    def test_set_levels(self) -> None:
+        child1 = SimpleTreeNode(1)
+        child2 = SimpleTreeNode(2)
+        self.tree.AddChild(self.root, child1)
+        self.tree.AddChild(child1, child2)
+        self.tree.set_levels()
+        self.assertEqual(self.root.level, 0)
+        self.assertEqual(child1.level, 1)
+        self.assertEqual(child2.level, 2)
+
 
 if __name__ == '__main__':
     unittest.main()
