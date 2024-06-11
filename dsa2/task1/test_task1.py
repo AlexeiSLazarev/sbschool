@@ -9,7 +9,6 @@ from io import StringIO
 import io
 
 
-
 class TestMultiplyNumber(unittest.TestCase):
 
     def test_power_of_number_base_case(self):
@@ -125,7 +124,6 @@ class TestPrintEvenIndexValues(unittest.TestCase):
         self.assertEqual(self.held_output.getvalue(), "10\n30\n50\n")
 
 
-
 class TestPrintEvenValues(unittest.TestCase):
 
     def test_empty_list(self):
@@ -209,6 +207,7 @@ class TestFindSecondMaxValue(unittest.TestCase):
     def test_with_duplicates(self):
         self.assertEqual(find_second_max([10, 20, 20, 20, 10, 30]), 20)
         self.assertEqual(find_second_max([30, 30, 30, 30, 30, 20]), 30)
+
 
 class TestListDir(unittest.TestCase):
 
