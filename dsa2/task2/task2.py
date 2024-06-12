@@ -28,7 +28,7 @@ class SimpleTree:
         elif node_to_delete.parent:
             node_to_delete.parent.children.remove(node_to_delete)
             node_to_delete.parent = None
-        self.set_levels()  # обновляем уровни узлов
+        self.set_levels()
 
     def process_node(self, node: SimpleTreeNode) -> List[SimpleTreeNode]:
         nodes = [node]
@@ -49,8 +49,13 @@ class SimpleTree:
     def MoveNode(self, original_node: SimpleTreeNode, new_parent: SimpleTreeNode) -> None:
         if original_node == self.root:
             return
-        self.DeleteNode(original_node)
-        self.AddChild(new_parent, original_node)
+        if original_node == new_parent or original_node in new_parent.children:
+            return
+
+        if original_node.parent:
+            original_node.parent.children.remove(original_node)
+        new_parent.children.append(original_node)
+        original_node.parent = new_parent
         self.set_levels()
 
     def Count(self) -> int:
