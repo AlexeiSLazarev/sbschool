@@ -9,8 +9,8 @@ class TestSimpleTree(unittest.TestCase):
         tree = SimpleTree(root)
         child = SimpleTreeNode(2, root)
         tree.AddChild(root, child)
-        self.assertIn(child, root.children)
-        self.assertEqual(child.parent, root)
+        self.assertIn(child, root.Children)
+        self.assertEqual(child.Parent, root)
 
     def test_delete_node(self):
         root = SimpleTreeNode(1, None)
@@ -18,8 +18,8 @@ class TestSimpleTree(unittest.TestCase):
         child = SimpleTreeNode(2, root)
         tree.AddChild(root, child)
         tree.DeleteNode(child)
-        self.assertNotIn(child, root.children)
-        self.assertEqual(child.parent, None)
+        self.assertNotIn(child, root.Children)
+        self.assertEqual(child.Parent, None)
 
     def test_get_all_nodes(self):
         root = SimpleTreeNode(1, None)
@@ -58,9 +58,9 @@ class TestSimpleTree(unittest.TestCase):
         grandchild1 = SimpleTreeNode(4, child1)
         tree.AddChild(child1, grandchild1)
         tree.MoveNode(grandchild1, child2)
-        self.assertIn(grandchild1, child2.children)
-        self.assertEqual(grandchild1.parent, child2)
-        self.assertNotIn(grandchild1, child1.children)
+        self.assertIn(grandchild1, child2.Children)
+        self.assertEqual(grandchild1.Parent, child2)
+        self.assertNotIn(grandchild1, child1.Children)
 
     def test_count(self):
         root = SimpleTreeNode(1, None)
@@ -100,15 +100,15 @@ class TestSimpleTree2(unittest.TestCase):
     def test_add_child(self) -> None:
         child = SimpleTreeNode(1)
         self.tree.AddChild(self.root, child)
-        self.assertIn(child, self.root.children)
-        self.assertEqual(child.parent, self.root)
+        self.assertIn(child, self.root.Children)
+        self.assertEqual(child.Parent, self.root)
 
     def test_delete_node(self) -> None:
         child = SimpleTreeNode(1)
         self.tree.AddChild(self.root, child)
         self.tree.DeleteNode(child)
-        self.assertNotIn(child, self.root.children)
-        self.assertIsNone(child.parent)
+        self.assertNotIn(child, self.root.Children)
+        self.assertIsNone(child.Parent)
 
     def test_get_all_nodes(self) -> None:
         child1 = SimpleTreeNode(1)
@@ -139,9 +139,9 @@ class TestSimpleTree2(unittest.TestCase):
         self.tree.AddChild(self.root, child1)
         self.tree.AddChild(self.root, child2)
         self.tree.MoveNode(child1, child2)
-        self.assertNotIn(child1, self.root.children)
-        self.assertIn(child1, child2.children)
-        self.assertEqual(child1.parent, child2)
+        self.assertNotIn(child1, self.root.Children)
+        self.assertIn(child1, child2.Children)
+        self.assertEqual(child1.Parent, child2)
 
     def test_count(self) -> None:
         child1 = SimpleTreeNode(1)
@@ -191,11 +191,10 @@ class TestErrors(unittest.TestCase):
         tree.AddChild(root, child2)
         tree.AddChild(root, child3)
         tree.AddChild(child1, child4)
-        # print([node.node_value for node in tree.GetAllNodes()])
         search_value: int = 3
         node_list: List[SimpleTreeNode] = tree.FindNodesByValue(search_value)
         for node in node_list:
-            self.assertEqual(node.node_value, search_value)
+            self.assertEqual(node.NodeValue, search_value)
         self.assertEqual(len(node_list), 4)
 
     def test_find_nodes_by_value(self) -> None:
