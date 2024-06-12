@@ -90,6 +90,7 @@ class TestSimpleTree(unittest.TestCase):
         tree.AddChild(child1, new_child)
         self.assertEqual(tree.LeafCount(), 3)
 
+
 class TestSimpleTree2(unittest.TestCase):
 
     def setUp(self) -> None:
@@ -168,6 +169,46 @@ class TestSimpleTree2(unittest.TestCase):
         self.assertEqual(self.root.level, 0)
         self.assertEqual(child1.level, 1)
         self.assertEqual(child2.level, 2)
+
+
+class TestErrors(unittest.TestCase):
+    def setUp(self) -> None:
+        self.root = SimpleTreeNode(0)
+        self.tree = SimpleTree(self.root)
+
+    def test_find_by_value(self):
+        '''
+        Исключение при обращении к NodeValue после FindNodesByValue
+        '''
+        root = SimpleTreeNode(0, None)
+        tree = SimpleTree(root)
+        search_value: int = 3
+        child1 = SimpleTreeNode(search_value, root)
+        child2 = SimpleTreeNode(search_value, root)
+        child3 = SimpleTreeNode(search_value, root)
+        child4 = SimpleTreeNode(search_value, root)
+        tree.AddChild(root, child1)
+        tree.AddChild(root, child2)
+        tree.AddChild(root, child3)
+        tree.AddChild(child1, child4)
+        # print([node.node_value for node in tree.GetAllNodes()])
+        search_value: int = 3
+        node_list: List[SimpleTreeNode] = tree.FindNodesByValue(search_value)
+        for node in node_list:
+            self.assertEqual(node.node_value, search_value)
+        self.assertEqual(len(node_list), 4)
+
+    def test_find_nodes_by_value(self) -> None:
+        child1 = SimpleTreeNode(1)
+        child2 = SimpleTreeNode(2)
+        child3 = SimpleTreeNode(1)
+        self.tree.AddChild(self.root, child1)
+        self.tree.AddChild(self.root, child2)
+        self.tree.AddChild(self.root, child3)
+        nodes_with_value_1 = self.tree.FindNodesByValue(1)
+        self.assertEqual(len(nodes_with_value_1), 2)
+        self.assertIn(child1, nodes_with_value_1)
+        self.assertIn(child3, nodes_with_value_1)
 
 
 if __name__ == '__main__':

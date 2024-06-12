@@ -30,37 +30,21 @@ class SimpleTree:
             node_to_delete.parent = None
         self.set_levels()  # обновляем уровни узлов
 
-    def process_node(self, node_list: List[SimpleTreeNode], node_index: int, node_values: List[SimpleTreeNode]) -> None:
-        if node_index < 0:
-            return
-        current_node: SimpleTreeNode = node_list[node_index]
-        node_values.append(current_node)
-        num_children: int = len(current_node.children)
-        if num_children > 0:
-            self.process_node(current_node.children, num_children - 1, node_values)
-        self.process_node(node_list, node_index - 1, node_values)
+    def process_node(self, node: SimpleTreeNode) -> List[SimpleTreeNode]:
+        nodes = [node]
+        for child in node.children:
+            nodes.extend(self.process_node(child))
+        return nodes
 
     def GetAllNodes(self) -> List[SimpleTreeNode]:
         if self.root is None:
             return []
-        if len(self.root.children) == 0:
-            return [self.root]
-        node_list: List[SimpleTreeNode] = self.root.children
-        node_index: int = len(node_list) - 1
-        node_values: List[SimpleTreeNode] = [self.root]
-        self.process_node(node_list, node_index, node_values)
-        return node_values
+        return self.process_node(self.root)
 
-    def search_node_by_value(self, node_list: List[SimpleTreeNode], node_index: int, value: int) -> List[SimpleTreeNode]:
-        if node_index < 0:
-            return []
-        if node_list[node_index].node_value == value:
-            return [node_list[node_index]] + self.search_node_by_value(node_list, node_index - 1, value)
-        return self.search_node_by_value(node_list, node_index - 1, value)
 
     def FindNodesByValue(self, val: Any) -> List[SimpleTreeNode]:
         node_list: List[SimpleTreeNode] = self.GetAllNodes()
-        return self.search_node_by_value(node_list, len(node_list) - 1, val)
+        return [node for node in node_list if node.node_value == val]
 
     def MoveNode(self, original_node: SimpleTreeNode, new_parent: SimpleTreeNode) -> None:
         if original_node == self.root:
