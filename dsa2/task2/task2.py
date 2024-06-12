@@ -15,9 +15,8 @@ class SimpleTree:
         self.set_levels()
 
     def AddChild(self, parent_node: SimpleTreeNode, new_child: SimpleTreeNode) -> None:
-        if new_child.Parent:
-            if new_child in new_child.Parent.Children:
-                new_child.Parent.Children.remove(new_child)
+        if new_child.Parent and new_child in new_child.Parent.Children:
+            new_child.Parent.Children.remove(new_child)
         parent_node.Children.append(new_child)
         new_child.Parent = parent_node
         self.set_levels()
