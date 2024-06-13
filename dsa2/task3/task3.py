@@ -135,11 +135,11 @@ class BST:
         return self.count_nodes(self.Root)
 
     def print_tree(self) -> None:
-        self.printTree2(self.Root)
+        self.print_tree_recursive(self.Root)
         print("*" * 10)
 
-    def printTree2(self, node, level=0) -> None:
+    def print_tree_recursive(self, node, level=0) -> None:
         if node is not None:
-            self.printTree2(node.RightChild, level + 1)
+            self.print_tree_recursive(node.RightChild, level + 1)
             print(' ' * 4 * level + '-> ' + str(node.NodeKey))
-            self.printTree2(node.LeftChild, level + 1)
+            self.print_tree_recursive(node.LeftChild, level + 1)
