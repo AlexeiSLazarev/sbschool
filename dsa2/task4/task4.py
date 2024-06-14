@@ -146,7 +146,7 @@ class BST:
             print(' ' * 4 * level + '-> ' + str(node.NodeKey))
             self.print_tree_recursive(node.LeftChild, level + 1)
 
-    def wide_all_queue(self, print_queue: List[Any], final_queue: List[Any]) -> None:
+    def wide_all_recursive(self, print_queue: List[Any], final_queue: List[Any]) -> None:
         if len(print_queue) <= 0:
             return
         node: BSTNode = print_queue.pop(0)
@@ -155,12 +155,12 @@ class BST:
             print_queue.append(node.LeftChild)
         if node.RightChild is not None:
             print_queue.append(node.RightChild)
-        self.wide_all_queue(print_queue, final_queue)
+        self.wide_all_recursive(print_queue, final_queue)
 
     def WideAllNodes(self) -> tuple[Any, ...]:
         print_queue: List[Any] = [self.Root]
         final_queue: List[Any] = []
-        self.wide_all_queue(print_queue, final_queue)
+        self.wide_all_recursive(print_queue, final_queue)
         return tuple(final_queue)
 
     def in_order_recursive(self, node: BSTNode, node_list: List[Any]) -> None:
