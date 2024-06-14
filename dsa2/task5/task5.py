@@ -58,3 +58,5 @@ class aBST:
         if self.Tree[node_index] is not None:
             print(' ' * 4 * level + '-> ' + str(self.Tree[node_index]))
         self.print_tree_recursive(self.get_right_child(node_index), level + 1)
+
+
