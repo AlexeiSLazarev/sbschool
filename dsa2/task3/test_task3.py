@@ -117,13 +117,68 @@ class TestBST(unittest.TestCase):
         self.assertFalse(bst.FindNodeByKey(5).NodeHasKey)
         self.assertEqual(bst.Root.LeftChild.NodeKey, 6)
 
-
     def test_delete(self):
         bst = BST(BSTNode(10, 'Root', None))
         for i in range(12):
-            x = randint(1,12)
+            x = randint(1, 12)
             bst.AddKeyValue(x, x)
         bst.DeleteNodeByKey(5)
+
+
+class TestBST_errors(unittest.TestCase):
+
+    def setUp(self):
+        self.bst = BST(None)
+
+    def test_add_key_value_to_empty_tree(self):
+        self.assertTrue(self.bst.AddKeyValue(10, 'value1'))
+        self.assertIsNotNone(self.bst.Root)
+        self.assertEqual(self.bst.Root.NodeKey, 10)
+        self.assertEqual(self.bst.Root.NodeValue, 'value1')
+
+    def test_add_key_value_to_left(self):
+        self.bst.AddKeyValue(10, 'value1')
+        self.assertTrue(self.bst.AddKeyValue(5, 'value2'))
+        self.assertIsNotNone(self.bst.Root.LeftChild)
+        self.assertEqual(self.bst.Root.LeftChild.NodeKey, 5)
+        self.assertEqual(self.bst.Root.LeftChild.NodeValue, 'value2')
+
+    def test_add_key_value_to_right(self):
+        self.bst.AddKeyValue(10, 'value1')
+        self.assertTrue(self.bst.AddKeyValue(15, 'value3'))
+        self.assertIsNotNone(self.bst.Root.RightChild)
+        self.assertEqual(self.bst.Root.RightChild.NodeKey, 15)
+        self.assertEqual(self.bst.Root.RightChild.NodeValue, 'value3')
+
+    def test_add_existing_key(self):
+        self.bst.AddKeyValue(10, 'value1')
+        self.assertFalse(self.bst.AddKeyValue(10, 'value4'))
+        self.assertEqual(self.bst.Root.NodeValue, 'value1')  # Value should not change
+
+    def test_find_node_by_key(self):
+        self.bst.AddKeyValue(10, 'value1')
+        self.bst.AddKeyValue(5, 'value2')
+        self.bst.AddKeyValue(15, 'value3')
+
+        result = self.bst.FindNodeByKey(10)
+        self.assertTrue(result.NodeHasKey)
+        self.assertEqual(result.Node.NodeValue, 'value1')
+
+        result = self.bst.FindNodeByKey(5)
+        self.assertTrue(result.NodeHasKey)
+        self.assertEqual(result.Node.NodeValue, 'value2')
+
+        result = self.bst.FindNodeByKey(15)
+        self.assertTrue(result.NodeHasKey)
+        self.assertEqual(result.Node.NodeValue, 'value3')
+
+        result = self.bst.FindNodeByKey(20)
+        self.assertFalse(result.NodeHasKey)
+
+    def test_find_node_in_empty_tree(self):
+        result = self.bst.FindNodeByKey(10)
+        self.assertFalse(result.NodeHasKey)
+        self.assertIsNone(result.Node)
 
 
 if __name__ == '__main__':
