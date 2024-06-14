@@ -4,7 +4,7 @@ from typing import Any, Optional
 
 class BSTNode:
 
-    def __init__(self, key: int, val: Any, parent: 'BSTNode'):
+    def __init__(self, key: int, val: Any, parent: Optional['BSTNode']):
         self.NodeKey = key
         self.NodeValue = val
         self.Parent = parent
@@ -31,16 +31,17 @@ class BST:
 
         if key < node.NodeKey and node.LeftChild is None:
             return BSTFind(node, False, to_left=True)
+
         if key < node.NodeKey:
             return self.find_node(node.LeftChild, key)
 
         if key > node.NodeKey and node.RightChild is None:
             return BSTFind(node, False, to_left=False)
+
         if key > node.NodeKey:
             return self.find_node(node.RightChild, key)
 
     def FindNodeByKey(self, key: int) -> BSTFind:
-
         if self.Root is None:
             return BSTFind(None, False, False)
         return self.find_node(self.Root, key)
@@ -48,6 +49,7 @@ class BST:
     def AddKeyValue(self, key: int, val: Any) -> bool:
         if self.Root is None:
             self.Root = BSTNode(key, val, None)
+            return True
 
         result = self.FindNodeByKey(key)
         if result.NodeHasKey:
