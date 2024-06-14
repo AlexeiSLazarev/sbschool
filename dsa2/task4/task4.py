@@ -136,8 +136,9 @@ class BST:
         return self.count_nodes(self.Root)
 
     def print_tree(self) -> None:
+        print("*" * 20)
         self.print_tree_recursive(self.Root)
-        print("*" * 10)
+        print("*" * 20)
 
     def print_tree_recursive(self, node, level=0) -> None:
         if node is not None:
@@ -145,7 +146,7 @@ class BST:
             print(' ' * 4 * level + '-> ' + str(node.NodeKey))
             self.print_tree_recursive(node.LeftChild, level + 1)
 
-    def wide_all_queue(self, print_queue: List[Any], final_queue: List[Any]) -> Tuple[Any]:
+    def wide_all_queue(self, print_queue: List[Any], final_queue: List[Any]) -> None:
         if len(print_queue) <= 0:
             return
         node: BSTNode = print_queue.pop(0)
@@ -161,17 +162,6 @@ class BST:
         final_queue = []
         self.wide_all_queue(print_queue, final_queue)
         return tuple(final_queue)
-
-    # def set_node_level(self, node: BSTNode, level: int) -> None:
-    #     node.level = level
-    #     if node.LeftChild:
-    #         self.set_node_level(node.LeftChild, level + 1)
-    #     if node.RightChild:
-    #         self.set_node_level(node.RightChild, level + 1)
-    #
-    # def set_levels(self) -> None:
-    #     if self.Root is not None:
-    #         self.set_node_level(self.Root, 0)
 
     def in_order_recursive(self, node, node_list: List[Any]) -> None:
         if node is not None:
@@ -207,3 +197,13 @@ class BST:
             return tuple(node_list)
         self.pre_order_recursive(self.Root, node_list)
         return tuple(node_list)
+
+    def invert_tree_recursive(self, current_node: BSTNode):
+        if current_node is None:
+            return
+        self.invert_tree_recursive(current_node.LeftChild)
+        self.invert_tree_recursive(current_node.RightChild)
+        current_node.LeftChild, current_node.RightChild = current_node.RightChild, current_node.LeftChild
+
+    def invert_tree(self):
+        self.invert_tree_recursive(self.Root)
