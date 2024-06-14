@@ -158,36 +158,35 @@ class BST:
         self.wide_all_queue(print_queue, final_queue)
 
     def WideAllNodes(self) -> tuple[Any, ...]:
-        print_queue = [self.Root]
-        final_queue = []
+        print_queue: List[Any] = [self.Root]
+        final_queue: List[Any] = []
         self.wide_all_queue(print_queue, final_queue)
         return tuple(final_queue)
 
-    def in_order_recursive(self, node, node_list: List[Any]) -> None:
+    def in_order_recursive(self, node: BSTNode, node_list: List[Any]) -> None:
         if node is not None:
             self.in_order_recursive(node.LeftChild, node_list)
             node_list.append(node)
             self.in_order_recursive(node.RightChild, node_list)
         return
 
-    def post_order_recursive(self, node, node_list: List[Any]) -> None:
+    def post_order_recursive(self, node: BSTNode, node_list: List[Any]) -> None:
         if node is not None:
             self.post_order_recursive(node.LeftChild, node_list)
             self.post_order_recursive(node.RightChild, node_list)
             node_list.append(node)
         return
 
-    def pre_order_recursive(self, node, node_list: List[Any]) -> None:
+    def pre_order_recursive(self, node: BSTNode, node_list: List[Any]) -> None:
         if node is not None:
             node_list.append(node)
             self.pre_order_recursive(node.LeftChild, node_list)
             self.pre_order_recursive(node.RightChild, node_list)
         return
 
-    def DeepAllNodes(self, order_key: int):
-
+    def DeepAllNodes(self, order_key: int) -> Tuple[Any, ...]:
         if order_key not in (0, 1, 2):
-            raise Exception("Wrong key value")
+            raise Exception("Wrong key value.")
         node_list = []
         if order_key == 0:
             self.in_order_recursive(self.Root, node_list)
@@ -198,12 +197,12 @@ class BST:
         self.pre_order_recursive(self.Root, node_list)
         return tuple(node_list)
 
-    def invert_tree_recursive(self, current_node: BSTNode):
+    def invert_tree_recursive(self, current_node: BSTNode) -> None:
         if current_node is None:
             return
         self.invert_tree_recursive(current_node.LeftChild)
         self.invert_tree_recursive(current_node.RightChild)
         current_node.LeftChild, current_node.RightChild = current_node.RightChild, current_node.LeftChild
 
-    def invert_tree(self):
+    def invert_tree(self) -> None:
         self.invert_tree_recursive(self.Root)
