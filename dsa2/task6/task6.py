@@ -215,8 +215,10 @@ def add_middle_to_bst(array_to_bst: List, bst: BST):
     middle: int = len(array_to_bst) // 2
     key: int = array_to_bst[middle]
     bst.AddKeyValue(key, key)
-    add_middle_to_bst(array_to_bst[:middle], bst)
-    add_middle_to_bst(array_to_bst[middle:], bst)
+    left_subtree = array_to_bst[:middle]
+    right_subtree = array_to_bst[middle + 1:]
+    add_middle_to_bst(left_subtree, bst)
+    add_middle_to_bst(right_subtree, bst)
 
 
 def GenerateBBSTArray(array_to_bst: list):

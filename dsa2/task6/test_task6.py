@@ -9,7 +9,7 @@ import sys
 class TestPrintEvenIndexValues(unittest.TestCase):
 
     def test_GenerateBBSTArray(self):
-        test_array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+        test_array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
         bst = GenerateBBSTArray(test_array)
         bst.print_tree()
 
