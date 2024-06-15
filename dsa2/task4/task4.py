@@ -49,6 +49,7 @@ class BST:
     def AddKeyValue(self, key: int, val: Any) -> bool:
         if self.Root is None:
             self.Root = BSTNode(key, val, None)
+            return True
 
         result = self.FindNodeByKey(key)
         if result.NodeHasKey:
