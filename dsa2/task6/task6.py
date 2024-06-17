@@ -25,18 +25,16 @@ class BST:
         self.Root = node
 
     def find_node(self, node: BSTNode, key: int) -> BSTFind:
-        if node.NodeKey == key:
-            return BSTFind(node, True, False)
-
-        if key < node.NodeKey and node.LeftChild is None:
-            return BSTFind(node, False, to_left=True)
-        if key < node.NodeKey:
-            return self.find_node(node.LeftChild, key)
-
-        if key > node.NodeKey and node.RightChild is None:
-            return BSTFind(node, False, to_left=False)
-        if key > node.NodeKey:
-            return self.find_node(node.RightChild, key)
+        while node is not None:
+            if node.NodeKey == key:
+                return BSTFind(node, True, False)
+            to_left = key < node.NodeKey
+            if to_left and node.LeftChild is None:
+                return BSTFind(node, False, True)
+            elif not to_left and node.RightChild is None:
+                return BSTFind(node, False, False)
+            node = node.LeftChild if to_left else node.RightChild
+        return BSTFind(None, False, False)
 
     def FindNodeByKey(self, key: int) -> BSTFind:
 
@@ -58,7 +56,16 @@ class BST:
             result.Node.RightChild = BSTNode(key, val, result.Node)
         return True
 
+    def print_tree(self) -> None:
+        print("*" * 20)
+        self.print_tree_recursive(self.Root)
+        print("*" * 20)
 
+    def print_tree_recursive(self, node, level=0) -> None:
+        if node is not None:
+            self.print_tree_recursive(node.RightChild, level + 1)
+            print(' ' * 4 * level + '-> ' + str(node.NodeKey))
+            self.print_tree_recursive(node.LeftChild, level + 1)
 
 
 def add_middle_to_bst(array_to_bst: List, bst: BST):
