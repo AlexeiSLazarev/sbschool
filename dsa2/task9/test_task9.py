@@ -19,8 +19,8 @@ class TestSimpleGraph(unittest.TestCase):
         g.AddVertex(1)
         g.AddVertex(2)
         g.AddEdge(1, 2)
-        v1_id = g.find_edge_id(1, 0)
-        v2_id = g.find_edge_id(2, 0)
+        v1_id = g.find_vertex_id(1, 0)
+        v2_id = g.find_vertex_id(2, 0)
         self.assertEqual(g.m_adjacency[v1_id][v2_id], 1)
 
     def test_RemoveEdge(self):
@@ -29,8 +29,8 @@ class TestSimpleGraph(unittest.TestCase):
         g.AddVertex(2)
         g.AddEdge(1, 2)
         g.RemoveEdge(1, 2)
-        v1_id = g.find_edge_id(1, 0)
-        v2_id = g.find_edge_id(2, 0)
+        v1_id = g.find_vertex_id(1, 0)
+        v2_id = g.find_vertex_id(2, 0)
         self.assertEqual(g.m_adjacency[v1_id][v2_id], 0)
 
     def test_IsEdge(self):
@@ -70,6 +70,16 @@ class TestSimpleGraph(unittest.TestCase):
         self.assertEqual(g.vertex[0].Value, 1)
         self.assertEqual(g.vertex[1].Value, 2)
         self.assertEqual(g.num_vertex, 2)
+
+    def test_add_vertices_error(self):
+        g = SimpleGraph(5)
+        for i in range(10):
+            g.AddVertex(i)
+        g.print_vertex_list()
+        g = SimpleGraph(5)
+        for i in range(5):
+            g.AddVertex(1)
+        g.print_vertex_list()
 
 
 if __name__ == '__main__':
