@@ -25,21 +25,17 @@ class SimpleGraph:
             return vertex_id
         return self.find_edge_id(vertex_val, vertex_id + 1)
 
-    def AddEdge(self, v1: int, v2: int) -> bool:
+    def AddEdge(self, v1: int, v2: int) -> None:
         v1_id = self.find_edge_id(v1, 0)
         v2_id = self.find_edge_id(v2, 0)
         if v1_id is not None and v2_id is not None:
             self.m_adjacency[v1_id][v2_id] = 1
-            return True
-        return False
 
-    def RemoveEdge(self, v1: int, v2: int) -> bool:
+    def RemoveEdge(self, v1: int, v2: int) -> None:
         v1_id = self.find_edge_id(v1, 0)
         v2_id = self.find_edge_id(v2, 0)
         if v1_id is not None and v2_id is not None:
             self.m_adjacency[v1_id][v2_id] = 0
-            return True
-        return False
 
     def get_vertex_list(self) -> List[int]:
         return [v.Value for v in self.vertex if v is not None]
@@ -78,9 +74,7 @@ class SimpleGraph:
     def IsEdge(self, v1: int, v2: int) -> bool:
         v1_id = self.find_edge_id(v1, 0)
         v2_id = self.find_edge_id(v2, 0)
-        if v1_id is not None and v2_id is not None and self.m_adjacency[v1_id][v2_id] == 1:
-            return True
-        return False
+        return v1_id is not None and v2_id is not None and self.m_adjacency[v1_id][v2_id] == 1
 
     def print_adjacency_matrix(self) -> None:
         for row in self.m_adjacency:
