@@ -25,11 +25,19 @@ class SimpleGraph:
             return vertex_id
         return self.find_edge_id(vertex_val, vertex_id + 1)
 
+    def check_vertices(self, v1: int, v2: int):
+        v1_id = self.find_edge_id(v1, 0)
+        if v1_id is None:
+            self.AddVertex(v1)
+        v2_id = self.find_edge_id(v2, 0)
+        if v2_id is None:
+            self.AddVertex(v2)
+
     def AddEdge(self, v1: int, v2: int) -> None:
+        self.check_vertices(v1, v2)
         v1_id = self.find_edge_id(v1, 0)
         v2_id = self.find_edge_id(v2, 0)
-        if v1_id is not None and v2_id is not None:
-            self.m_adjacency[v1_id][v2_id] = 1
+        self.m_adjacency[v1_id][v2_id] = 1
 
     def RemoveEdge(self, v1: int, v2: int) -> None:
         v1_id = self.find_edge_id(v1, 0)
