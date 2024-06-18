@@ -64,6 +64,13 @@ class TestSimpleGraph(unittest.TestCase):
         self.assertFalse(g.IsEdge(2, 3))
         self.assertEqual(g.num_vertex, 2)
 
+    def test_add_vertices(self):
+        g = SimpleGraph(5)
+        g.AddEdge(1, 2)
+        self.assertEqual(g.vertex[0].Value, 1)
+        self.assertEqual(g.vertex[1].Value, 2)
+        self.assertEqual(g.num_vertex, 2)
+
 
 if __name__ == '__main__':
     unittest.main()
