@@ -13,37 +13,36 @@ class SimpleGraph:
         self.vertex: List[Optional[Vertex]] = [None] * size
         self.num_vertex: int = 0
 
+    def find_vertex_id(self, vertex_val: int) -> Optional[int]:
+        for i in range(self.num_vertex):
+            if self.vertex[i] and self.vertex[i].Value == vertex_val:
+                return i
+        return None
+
     def AddVertex(self, v: int) -> None:
-        if self.num_vertex >= self.max_vertex or self.find_vertex_id(v, 0) is not None:
+        if self.num_vertex >= self.max_vertex or self.find_vertex_id(v) is not None:
             return
 
         self.vertex[self.num_vertex] = Vertex(v)
         self.num_vertex += 1
 
-    def find_vertex_id(self, vertex_val: int, vertex_id: int) -> Optional[int]:
-        if vertex_id >= self.num_vertex:
-            return None
-        if self.vertex[vertex_id] and self.vertex[vertex_id].Value == vertex_val:
-            return vertex_id
-        return self.find_vertex_id(vertex_val, vertex_id + 1)
-
     def check_vertices(self, v1: int, v2: int):
-        v1_id = self.find_vertex_id(v1, 0)
+        v1_id = self.find_vertex_id(v1)
         if v1_id is None:
             self.AddVertex(v1)
-        v2_id = self.find_vertex_id(v2, 0)
+        v2_id = self.find_vertex_id(v2)
         if v2_id is None:
             self.AddVertex(v2)
 
     def AddEdge(self, v1: int, v2: int) -> None:
         self.check_vertices(v1, v2)
-        v1_id = self.find_vertex_id(v1, 0)
-        v2_id = self.find_vertex_id(v2, 0)
+        v1_id = self.find_vertex_id(v1)
+        v2_id = self.find_vertex_id(v2)
         self.m_adjacency[v1_id][v2_id] = 1
 
     def RemoveEdge(self, v1: int, v2: int) -> None:
-        v1_id = self.find_vertex_id(v1, 0)
-        v2_id = self.find_vertex_id(v2, 0)
+        v1_id = self.find_vertex_id(v1)
+        v2_id = self.find_vertex_id(v2)
         if v1_id is not None and v2_id is not None:
             self.m_adjacency[v1_id][v2_id] = 0
 
@@ -74,7 +73,7 @@ class SimpleGraph:
                 self.m_adjacency[j][i + 1] = 0
 
     def RemoveVertex(self, v: int) -> None:
-        v_id = self.find_vertex_id(v, 0)
+        v_id = self.find_vertex_id(v)
         if v_id is not None:
             self.clean_lines(v_id)
             self.clean_vertex(v_id)
@@ -82,8 +81,8 @@ class SimpleGraph:
             self.append_matrix(v_id)
 
     def IsEdge(self, v1: int, v2: int) -> bool:
-        v1_id = self.find_vertex_id(v1, 0)
-        v2_id = self.find_vertex_id(v2, 0)
+        v1_id = self.find_vertex_id(v1)
+        v2_id = self.find_vertex_id(v2)
         return v1_id is not None and v2_id is not None and self.m_adjacency[v1_id][v2_id] == 1
 
     def print_adjacency_matrix(self) -> None:
