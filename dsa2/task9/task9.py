@@ -15,7 +15,7 @@ class SimpleGraph:
 
     def find_vertex_id(self, vertex_val: int) -> Optional[int]:
         for i in range(self.num_vertex):
-            if self.vertex[i] and self.vertex[i].Value == vertex_val:
+            if self.vertex[i] is not None and self.vertex[i].Value == vertex_val:
                 return i
         return None
 
