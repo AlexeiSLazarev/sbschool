@@ -17,8 +17,8 @@ class TestTmp(unittest.TestCase):
         tree.AddChild(node3, node4)
 
         edges = tree.EvenTrees()
-        result = [(edge[0].NodeValue, edge[1].NodeValue) for edge in edges]
-        self.assertListEqual(result, [(1, 3)])
+        result = [edge.NodeValue for edge in edges]
+        self.assertListEqual(result, [1, 3])
 
     def test_example1(self):
         node1 = SimpleTreeNode(1)
@@ -47,8 +47,8 @@ class TestTmp(unittest.TestCase):
         tree.AddChild(node8, node10)
 
         edges = tree.EvenTrees()
-        result = [(edge[0].NodeValue, edge[1].NodeValue) for edge in edges]
-        self.assertListEqual(result, [(1, 3), (1, 4)])
+        result = [edge.NodeValue for edge in edges]
+        self.assertListEqual(result, [1, 3, 1, 4])
 
 
 if __name__ == '__main__':

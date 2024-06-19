@@ -181,12 +181,11 @@ class SimpleTree:
                 best_comb = comb
         return list(set(edges) - set(best_comb))
 
-    def convert_edges_keys_to_objects(self, edges: List[Tuple[int, int]]) -> List[
-                                        Tuple[SimpleTreeNode, SimpleTreeNode]]:
+    def convert_edges_keys_to_objects(self, edges: List[Tuple[int, int]]) -> List[SimpleTreeNode]:
         real_edges = [(self.find_node_by_key(edge[0]), self.find_node_by_key(edge[1])) for edge in edges]
-        return real_edges
+        return sum(real_edges, ())
 
-    def EvenTrees(self) -> List[Tuple[SimpleTreeNode, SimpleTreeNode]]:
+    def EvenTrees(self) -> List[SimpleTreeNode]:
         vertex_list = self.GetAllNodes()
         vertices = [node.NodeValue for node in vertex_list]
         edge_list = self.get_all_edges()
