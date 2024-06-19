@@ -149,7 +149,6 @@ class SimpleTree:
         for r in range(2, n + 1):
             all_combinations.extend(combinations(edges, r))
 
-        # Convert combinations from tuples to lists
         all_combinations = [list(comb) for comb in all_combinations]
 
         return all_combinations
