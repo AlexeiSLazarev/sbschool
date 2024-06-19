@@ -92,7 +92,6 @@ class SimpleTree:
             print(' ' * 4 * level + '-> ' + str(node.NodeValue))
             nodes = [node]
             for child in node.Children:
-                # print(' ' * 4 * level + '-> ' + str(node.NodeValue))
                 self.print_tree_recursive(child, level + 1)
             return nodes
 
@@ -115,16 +114,15 @@ class SimpleTree:
         return edge_combinations
 
     def find_connected_subgraphs(self, vertices: List[int], edges: List[Tuple[int, int]]) -> List[Set[int]]:
-        # Create an adjacency list
-        graph = defaultdict(list)
+        graph: defaultdict[int, List[int]] = defaultdict(list)
         for u, v in edges:
             graph[u].append(v)
             graph[v].append(u)
 
-        visited = set()
-        subgraphs = []
+        visited: Set[int] = set()
+        subgraphs: List[Set[int]] = []
 
-        def bfs(start):
+        def bfs(start: int) -> Set[int]:
             queue = deque([start])
             connected_component = set()
             while queue:
@@ -137,7 +135,6 @@ class SimpleTree:
                             queue.append(neighbor)
             return connected_component
 
-        # Find all connected components
         for vertex in vertices:
             if vertex not in visited:
                 subgraph = bfs(vertex)
@@ -149,7 +146,7 @@ class SimpleTree:
         all_combinations = []
         n = len(edges)
 
-        for r in range(2, n + 1):  # Start from 2 to exclude subgraphs with less than 2 elements
+        for r in range(2, n + 1):
             all_combinations.extend(combinations(edges, r))
 
         # Convert combinations from tuples to lists
@@ -172,25 +169,25 @@ class SimpleTree:
 
         return best_combination
 
-    def find_edges_to_delete(self, edges, vertices):
+    def find_edges_to_delete(self, edges: List[Tuple[int, int]], vertices: List[int]) -> List[Tuple[int, int]]:
         edge_combinations = self.generate_edge_combinations(edges)
-        best_comb = []
-        max_num_subs = 0
+        best_comb: List[Tuple[int, int]] = []
+        max_num_subs: int = 0
         for comb_id, comb in enumerate(edge_combinations):
             connected_subgraphs = self.find_connected_subgraphs(vertices, comb)
             sum_of_evens = sum(1 for subgraph in connected_subgraphs if len(subgraph) % 2 == 0)
             num_of_sub = len(connected_subgraphs)
-            if sum_of_evens == num_of_sub:
-                if num_of_sub > max_num_subs:
-                    max_num_subs = num_of_sub
-                    best_comb = comb
+            if sum_of_evens == num_of_sub and num_of_sub > max_num_subs:
+                max_num_subs = num_of_sub
+                best_comb = comb
         return list(set(edges) - set(best_comb))
 
-    def convert_edges_keys_to_objects(self, edges):
+    def convert_edges_keys_to_objects(self, edges: List[Tuple[int, int]]) -> List[
+                                        Tuple[SimpleTreeNode, SimpleTreeNode]]:
         real_edges = [(self.find_node_by_key(edge[0]), self.find_node_by_key(edge[1])) for edge in edges]
         return real_edges
 
-    def EvenTrees(self):
+    def EvenTrees(self) -> List[Tuple[SimpleTreeNode, SimpleTreeNode]]:
         vertex_list = self.GetAllNodes()
         vertices = [node.NodeValue for node in vertex_list]
         edge_list = self.get_all_edges()
