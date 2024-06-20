@@ -73,7 +73,7 @@ class SimpleGraph:
     def get_neighbor_pairs(self, neighbors: List[int]) -> List[Tuple[int, int]]:
         return list(combinations(neighbors, 2))
 
-    def WeakVertices(self) -> List[int]:
+    def WeakVertices(self) -> List[Vertex]:
         all_vertices = self.get_vertex_list()
         in_triangle = []
         for current_vertex in all_vertices:
@@ -86,8 +86,9 @@ class SimpleGraph:
         triangle_vertices = set()
         for pair in in_triangle:
             triangle_vertices.update(pair)
+        not_in_triangle = list(set(all_vertices) - triangle_vertices)
 
-        return list(set(all_vertices) - triangle_vertices)
+        return [self.vertex[i] for i in not_in_triangle]
 
 
 

@@ -21,7 +21,7 @@ class TestSimpleGraph(unittest.TestCase):
 
         not_in_triangle = graph.WeakVertices()
 
-        self.assertListEqual(not_in_triangle, [4, 5, 6])
+        self.assertListEqual([x.Value for x in not_in_triangle], [4, 5, 6])
 
 
 if __name__ == '__main__':
