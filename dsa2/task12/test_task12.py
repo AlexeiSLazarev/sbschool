@@ -42,7 +42,7 @@ class TestSimpleGraph(unittest.TestCase):
         graph.AddEdge(1, 7)
         graph.AddEdge(2, 3)
         graph.AddEdge(2, 4)
-        vertex_list = graph.BreadthFirstSearch(1,3)
+        vertex_list = graph.BreadthFirstSearch(0,1)
         path_stack = [v.Value for v in vertex_list]
         print(path_stack)
 

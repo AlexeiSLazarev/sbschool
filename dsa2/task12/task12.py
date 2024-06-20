@@ -79,6 +79,7 @@ class SimpleGraph:
             if not self.vertex[n].Hit:
                 vertex_queue.append(n)
                 previous_nodes[n] = current_vertex
+                self.vertex[n].Hit = True
         return self.breadth_first_search_recursive(vertex_queue, previous_nodes, VTo)
 
     def reconstruct_path(self, previous_nodes: dict, VFrom: int, VTo: int) -> List[int]:
@@ -88,7 +89,7 @@ class SimpleGraph:
             path.append(VTo)
         if path[-1] == VFrom:
             return path
-        return []  # Return an empty path if there's no connection
+        return []
 
     def BreadthFirstSearch(self, VFrom: int, VTo: int) -> List[Vertex]:
         self.unhit_vertexes()
