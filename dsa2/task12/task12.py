@@ -101,3 +101,5 @@ class SimpleGraph:
             path.reverse()
             return [self.vertex[i] for i in path]
         return []
+
+
