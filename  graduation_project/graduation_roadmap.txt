@@ -1,0 +1,34 @@
+PART I. INTRO OT DJANGO
+
+1. Basics. (Setup, startup, HTTP, MVT)
+2. Models and migration.
+3. URL mapping, Views, Templates.
+4. Django admin.
+5. Serving Static Files.
+6. Forms. (Forms lib)
+7. Media serving and files upload.
+8. Sessions and authentication.
+9. Rest API.
+10. Testing.
+11. Third party libs.
+12. Generating CSV, PDF, binary files.
+(opt)13. Java-script
+
+At the end of the journey - ability to build a simple web-site of book reviews with a function of adding new books and
+reviews.
+The toy project development also includes: requirements, git, testing, api, admin customization, using of some
+third-party libs.
+
+Supliments:
+
+Web Development with Django: Learn to build modern web applications with a Python-based framework,
+Ben Shaw, Saurabh Badhwar, Andrew Bird
+
+Python. Разработка на основе тестирования, Гарри Персиваль
+
+https://ru.hexlet.io/programs/python-django-developer
+https://ru.hexlet.io/courses/python-django-basics
+https://ru.hexlet.io/courses/python-django-orm
+https://srs.myrusakov.ru/django
+https://stepik.org/course/183363/promo?search=4495409096
+https://www.youtube.com/watch?v=UmljXZIypDc&list=PL-osiE80TeTtoQCKZ03TU5fNfx2UY6U4p
